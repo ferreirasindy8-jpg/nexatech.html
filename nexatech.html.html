@@ -1,0 +1,2465 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexaTech | Hardware & PC Gamer</title>
+
+    <!-- Configuração para PWA (Aplicativo) -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00d2ff">
+
+    <!-- Fontes do Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome (Ícones) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Estilos CSS -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* ESCONDE O CURSOR PADRÃO */
+        
+        html,
+        body,
+        a,
+        button,
+        select,
+        input {
+            cursor: none !important;
+        }
+        /* EFEITO DE CURSOR PERSONALIZADO VIA JS */
+        
+        #customCursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 18px;
+            height: 18px;
+            background-color: #00d2ff;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 999999;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 12px #00d2ff, 0 0 20px #00d2ff;
+            transition: transform 0.1s ease, background-color 0.2s ease, width 0.2s ease, height 0.2s ease;
+        }
+        
+        #customCursor.hovered {
+            width: 28px;
+            height: 28px;
+            background-color: #ff0055;
+            box-shadow: 0 0 15px #ff0055, 0 0 25px #ff0055;
+        }
+        
+        body {
+            background-color: #0d0e12;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        /* NAVBAR PRINCIPAL */
+        
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 5%;
+            background-color: #16181e;
+            border-bottom: 1px solid #262933;
+            gap: 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            background: linear-gradient(135deg, #00d2ff, #0055ff);
+            color: #ffffff;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.6);
+            transform: skewX(-12deg);
+        }
+        
+        .logo-icon span {
+            font-weight: 900;
+            font-size: 28px;
+            font-style: italic;
+            transform: skewX(12deg);
+            background: linear-gradient(to bottom, #ffffff, #d0f4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 1.5px;
+        }
+        
+        .logo-text span {
+            color: #00d2ff;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            max-width: 400px;
+            background-color: #0d0e12;
+            border: 1px solid #262933;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-size: 14px;
+        }
+        
+        .search-box button {
+            background-color: #00d2ff;
+            border: none;
+            color: #0d0e12;
+            padding: 12px 20px;
+            font-size: 16px;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 13px;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .nav-item:hover {
+            color: #00d2ff;
+        }
+        
+        .nav-item i {
+            font-size: 20px;
+            color: #00d2ff;
+        }
+        
+        .nav-item-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.3;
+        }
+        
+        .nav-item-text span {
+            color: #717a8a;
+            font-size: 11px;
+        }
+        
+        .nav-item-text strong {
+            font-weight: 600;
+        }
+        
+        .badge {
+            position: absolute;
+            top: -6px;
+            left: 12px;
+            background-color: #ff3366;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 800;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* BARRA DE CATEGORIAS COM MENU DROPDOWN */
+        
+        .categories-bar {
+            background-color: #111318;
+            border-bottom: 1px solid #262933;
+            padding: 0 5%;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            position: relative;
+            z-index: 1000;
+        }
+        
+        .all-categories-btn {
+            background-color: #00d2ff;
+            color: #0d0e12;
+            padding: 12px 20px;
+            font-weight: 800;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            transition: background 0.2s;
+        }
+        
+        .all-categories-btn:hover {
+            background-color: #00b3df;
+        }
+        
+        .categories-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 5%;
+            width: 280px;
+            background-color: #16181e;
+            border: 1px solid #262933;
+            border-top: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            display: none;
+            flex-direction: column;
+            z-index: 2000;
+        }
+        
+        .categories-dropdown.active {
+            display: flex;
+        }
+        
+        .cat-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 18px;
+            color: #a0a5b1;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            border-bottom: 1px solid #1f232d;
+            transition: all 0.2s ease;
+        }
+        
+        .cat-item i {
+            color: #00d2ff;
+            width: 20px;
+        }
+        
+        .cat-item:hover {
+            background-color: #1f232d;
+            color: #ffffff;
+            padding-left: 22px;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: #a0a5b1;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.highlight {
+            color: #00d2ff;
+        }
+        /* CARROSSEL DE BANNERS DE OFERTAS */
+        
+        .carousel-container {
+            padding: 30px 5% 10px 5%;
+            position: relative;
+        }
+        
+        .carousel-track {
+            display: flex;
+            width: 100%;
+            height: 340px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            border: 1px solid #262933;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .promo-banner {
+            min-width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            pointer-events: none;
+        }
+        
+        .promo-banner.active {
+            opacity: 1;
+            pointer-events: all;
+            z-index: 2;
+        }
+        
+        .promo-banner:nth-child(1) {
+            background: linear-gradient(135deg, rgba(22, 24, 30, 0.9), rgba(11, 13, 18, 0.95)), url('https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=1200&q=80');
+        }
+        
+        .promo-banner:nth-child(2) {
+            background: linear-gradient(135deg, rgba(22, 24, 30, 0.9), rgba(11, 13, 18, 0.95)), url('https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&w=1200&q=80');
+        }
+        
+        .promo-banner:nth-child(3) {
+            background: linear-gradient(135deg, rgba(22, 24, 30, 0.9), rgba(11, 13, 18, 0.95)), url('https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=1200&q=80');
+        }
+        
+        .promo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 51, 102, 0.15);
+            border: 1px solid #ff3366;
+            color: #ff3366;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            width: fit-content;
+            margin-bottom: 15px;
+        }
+        
+        .promo-title {
+            font-size: 32px;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 10px;
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        }
+        
+        .promo-title span {
+            color: #00d2ff;
+        }
+        
+        .promo-desc {
+            font-size: 14px;
+            color: #a0a5b1;
+            margin-bottom: 25px;
+            max-width: 500px;
+        }
+        
+        .promo-btn {
+            background-color: #00d2ff;
+            color: #0d0e12;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 14px;
+            text-transform: uppercase;
+            width: fit-content;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
+            transition: transform 0.2s;
+        }
+        
+        .promo-btn:hover {
+            transform: scale(1.05);
+            background-color: #00b3df;
+        }
+        /* SETAS E PONTOS DO CARROSSEL */
+        
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(13, 14, 18, 0.7);
+            border: 1px solid #262933;
+            color: #ffffff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+        
+        .carousel-arrow:hover {
+            background-color: #00d2ff;
+            color: #0d0e12;
+            border-color: #00d2ff;
+        }
+        
+        .carousel-prev {
+            left: calc(5% + 15px);
+        }
+        
+        .carousel-next {
+            right: calc(5% + 15px);
+        }
+        
+        .carousel-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+        
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transition: background 0.3s, width 0.3s;
+        }
+        
+        .dot.active {
+            background: #00d2ff;
+            width: 25px;
+            border-radius: 5px;
+        }
+        /* MASCOTE DRAGÃO */
+        
+        .mascot-widget {
+            position: fixed;
+            bottom: 105px;
+            right: 25px;
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            z-index: 9998;
+        }
+        
+        .mascot-avatar {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #00d2ff, #ff0055);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 25px rgba(0, 210, 255, 0.8), 0 0 15px rgba(255, 0, 85, 0.5);
+            border: 2px solid #ffffff;
+            animation: dragonPulse 2.5s ease-in-out infinite;
+        }
+        
+        .mascot-avatar i {
+            font-size: 34px;
+            color: #ffffff;
+            filter: drop-shadow(0 0 5px rgba(0, 210, 255, 0.9));
+        }
+        
+        .mascot-bubble {
+            background-color: #16181e;
+            border: 1px solid #00d2ff;
+            padding: 12px 16px;
+            border-radius: 12px 12px 0 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+            max-width: 220px;
+        }
+        
+        .mascot-bubble strong {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #00d2ff;
+            font-size: 12px;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+        
+        .mascot-bubble p {
+            font-size: 12px;
+            color: #a0a5b1;
+            line-height: 1.4;
+        }
+        
+        @keyframes dragonPulse {
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-6px) scale(1.03);
+            }
+        }
+        /* BANNER DE COOKIES (LGPD) */
+        
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #16181e;
+            border-top: 2px solid #00d2ff;
+            padding: 20px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            z-index: 99999;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.8);
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+        
+        .cookie-banner.hidden {
+            transform: translateY(100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .cookie-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            max-width: 850px;
+        }
+        
+        .cookie-icon {
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            color: #00d2ff;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+        
+        .cookie-text h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+        
+        .cookie-text p {
+            font-size: 12px;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+        
+        .cookie-text a {
+            color: #00d2ff;
+            text-decoration: underline;
+        }
+        
+        .cookie-actions {
+            display: flex;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        
+        .cookie-btn-accept {
+            background-color: #00d2ff;
+            color: #0d0e12;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 13px;
+        }
+        
+        .cookie-btn-reject {
+            background-color: transparent;
+            color: #94a3b8;
+            border: 1px solid #262933;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        /* SEÇÕES DE PRODUTOS */
+        
+        .products-section {
+            padding: 30px 5%;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 4px solid #00d2ff;
+            padding-left: 12px;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .product-card {
+            background-color: #16181e;
+            border: 1px solid #262933;
+            border-radius: 12px;
+            padding: 16px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .product-card:hover {
+            border-color: #00d2ff;
+            transform: translateY(-3px);
+        }
+        
+        .fav-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(13, 14, 18, 0.7);
+            border: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            color: #717a8a;
+            z-index: 2;
+        }
+        
+        .fav-btn.active {
+            color: #ff3366;
+            background: rgba(255, 51, 102, 0.15);
+        }
+        
+        .product-image-container {
+            height: 160px;
+            background: #0d0e12;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 12px;
+            border: 1px solid #262933;
+        }
+        
+        .product-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .product-card:hover .product-image-container img {
+            transform: scale(1.05);
+        }
+        
+        .slide-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            background: rgba(0, 210, 255, 0.15);
+            border: 1px solid #00d2ff;
+            color: #00d2ff;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            border-radius: 20px;
+            margin-bottom: 6px;
+        }
+        
+        .slide-tag.red {
+            background: rgba(255, 51, 102, 0.15);
+            border-color: #ff3366;
+            color: #ff3366;
+        }
+        
+        .slide-tag.green {
+            background: rgba(46, 204, 113, 0.15);
+            border-color: #2ecc71;
+            color: #2ecc71;
+        }
+        
+        .product-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.4;
+            color: #ffffff;
+        }
+        
+        .product-old-price {
+            font-size: 11px;
+            color: #717a8a;
+            text-decoration: line-through;
+        }
+        
+        .product-price {
+            font-size: 18px;
+            font-weight: 800;
+            color: #00d2ff;
+            margin-bottom: 12px;
+        }
+        /* SELETOR DE QUANTIDADE NO CARD */
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #0d0e12;
+            border: 1px solid #262933;
+            border-radius: 6px;
+            padding: 4px;
+            margin-bottom: 12px;
+        }
+        
+        .qty-btn {
+            background-color: #16181e;
+            color: #ffffff;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .qty-btn:hover {
+            background-color: #00d2ff;
+            color: #0d0e12;
+        }
+        
+        .qty-input {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            text-align: center;
+            width: 40px;
+            font-size: 13px;
+            font-weight: 700;
+            outline: none;
+        }
+        
+        .add-cart-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #00d2ff;
+            color: #0d0e12;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        /* RODAPÉ ESTILO E-COMMERCE */
+        
+        .site-security-footer {
+            background-color: #111318;
+            border-top: 1px solid #262933;
+            padding: 50px 5% 30px 5%;
+            margin-top: 60px;
+        }
+        
+        .footer-links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto 40px auto;
+        }
+        
+        .footer-col h4 {
+            font-size: 14px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .footer-col ul li a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s ease;
+        }
+        
+        .footer-col ul li a:hover {
+            color: #00d2ff;
+        }
+        
+        .footer-newsletter {
+            max-width: 1200px;
+            margin: 0 auto 40px auto;
+            background-color: #16181e;
+            border: 1px solid #262933;
+            border-radius: 12px;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .newsletter-content h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .newsletter-content h4 i {
+            color: #00d2ff;
+        }
+        
+        .newsletter-content p {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+            max-width: 400px;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 10px 14px;
+            background-color: #0d0e12;
+            border: 1px solid #262933;
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 13px;
+            outline: none;
+        }
+        
+        .newsletter-form button {
+            background-color: #00d2ff;
+            color: #0d0e12;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto 40px auto;
+        }
+        
+        .security-box {
+            background-color: #16181e;
+            border: 1px solid #262933;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        
+        .security-box-icon {
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            color: #00d2ff;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+        
+        .security-box-content h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+        
+        .security-box-content p {
+            font-size: 13px;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+        
+        .ssl-certificate-banner {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #16181e, #1a1e29);
+            border: 2px solid rgba(0, 210, 255, 0.4);
+            border-radius: 16px;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .ssl-badge-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .ssl-shield-icon {
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, #00d2ff, #0055ff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: #ffffff;
+            flex-shrink: 0;
+        }
+        
+        .ssl-text h4 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .ssl-text h4 span {
+            background: #00d2ff;
+            color: #0d0e12;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 900;
+        }
+        
+        .ssl-text p {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+        
+        .ssl-verify-pills {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .verify-pill {
+            background: rgba(0, 210, 255, 0.08);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 8px;
+            color: #00d2ff;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .footer-legal-info {
+            max-width: 1200px;
+            margin: 30px auto 0 auto;
+            color: #64748b;
+            font-size: 11px;
+            line-height: 1.6;
+            text-align: center;
+        }
+        
+        .footer-legal-info p {
+            margin-bottom: 6px;
+        }
+        
+        .footer-legal-info .disclaimer {
+            color: #475569;
+        }
+        
+        .footer-copyright {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #262933;
+            color: #64748b;
+            font-size: 12px;
+        }
+        /* MODAIS */
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .modal-card {
+            background-color: #16181e;
+            border: 1px solid #262933;
+            border-radius: 16px;
+            padding: 30px;
+            width: 100%;
+            max-width: 480px;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: #717a8a;
+            font-size: 20px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: #0d0e12;
+            padding: 5px;
+            border-radius: 8px;
+        }
+        
+        .auth-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-weight: 700;
+            font-size: 13px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        
+        .auth-tab.active {
+            background: #16181e;
+            color: #00d2ff;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+        }
+        
+        .form-group input,
+        .form-group select {
+            background-color: #0d0e12;
+            border: 1px solid #262933;
+            padding: 12px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #00d2ff;
+        }
+        
+        .modal-submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: #00d2ff;
+            color: #0d0e12;
+            border: none;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 14px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        
+        .modal-submit-btn.whatsapp {
+            background: #25d366;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+        
+        .cart-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 250px;
+            overflow-y: auto;
+            margin: 15px 0;
+        }
+        
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #0d0e12;
+            border: 1px solid #262933;
+            padding: 12px;
+            border-radius: 8px;
+            gap: 12px;
+        }
+        
+        .cart-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #262933;
+        }
+        
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: 800;
+        }
+        
+        .checkout-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #25d366;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        /* OPÇÕES DE PAGAMENTO */
+        
+        .pay-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .pay-option-card {
+            background: #0d0e12;
+            border: 1px solid #262933;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            transition: 0.2s;
+        }
+        
+        .pay-option-card i {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 6px;
+            color: #00d2ff;
+        }
+        
+        .pay-option-card.active {
+            border-color: #00d2ff;
+            background: rgba(0, 210, 255, 0.08);
+            color: #fff;
+        }
+        /* RASTREIO GPS */
+        
+        .gps-tracker-box {
+            background: #0d0e12;
+            border: 1px solid #262933;
+            border-radius: 10px;
+            padding: 16px;
+            margin-top: 15px;
+        }
+        
+        .gps-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: 15px;
+        }
+        
+        .gps-step {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+        }
+        
+        .gps-step-icon {
+            width: 32px;
+            height: 32px;
+            background: #16181e;
+            border: 2px solid #262933;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 6px auto;
+            font-size: 12px;
+            color: #717a8a;
+        }
+        
+        .gps-step.completed .gps-step-icon {
+            background: #00d2ff;
+            border-color: #00d2ff;
+            color: #0d0e12;
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.6);
+        }
+        
+        .gps-step span {
+            font-size: 10px;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="customCursor"></div>
+
+    <!-- NAVBAR COM ATENDIMENTO E ENTRADA -->
+    <header class="navbar">
+        <a href="#" class="logo">
+            <div class="logo-icon"><span>N</span></div>
+            <div class="logo-text">NEXA<span>TECH</span></div>
+        </a>
+
+        <!-- BARRA DE PESQUISA COM ID FUNCIONAL -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Procure placas, PCs Gamer, Monitores...">
+            <button><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+
+        <div class="user-actions">
+            <!-- BOTÃO DE ACESSO RÁPIDO AO PAINEL ADM -->
+            <a href="admin.html" class="nav-item" style="text-decoration: none;">
+                <i class="fa-solid fa-gauge-high" style="color: #ff0055;"></i>
+                <div class="nav-item-text">
+                    <span>Área Restrita</span>
+                    <strong style="color: #00d2ff;">Painel Adm</strong>
+                </div>
+            </a>
+
+            <!-- ATENDIMENTO (ABRE WHATSAPP BONITO) -->
+            <div class="nav-item" onclick="abrirAtendimento()">
+                <i class="fa-solid fa-headset" style="color: #25d366;"></i>
+                <div class="nav-item-text">
+                    <span>Precisa de</span>
+                    <strong>Atendimento</strong>
+                </div>
+            </div>
+
+            <!-- ENTRADA / CONTA (ABRE LOGIN/CADASTRO OU DADOS DO USUÁRIO) -->
+            <div class="nav-item" onclick="abrirPainelUsuario()">
+                <i class="fa-solid fa-user"></i>
+                <div class="nav-item-text">
+                    <span>Bem-vindo</span>
+                    <strong id="btnEntrarText">Entrada / Conta</strong>
+                </div>
+            </div>
+
+            <!-- FAVORITOS -->
+            <div class="nav-item" onclick="openFavModal()">
+                <i class="fa-solid fa-heart"></i>
+                <span class="badge" id="favCount">0</span>
+                <div class="nav-item-text">
+                    <span>Meus</span>
+                    <strong>Favoritos</strong>
+                </div>
+            </div>
+
+            <!-- CARRINHO -->
+            <div class="nav-item" onclick="openCartModal()">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="badge" id="cartCount">0</span>
+                <div class="nav-item-text">
+                    <span>Meu</span>
+                    <strong>Carrinho</strong>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- BARRA DE CATEGORIAS COM MENU DROPDOWN -->
+    <nav class="categories-bar">
+        <div class="all-categories-btn" onclick="toggleCategoriesMenu()">
+            <i class="fa-solid fa-bars"></i>
+            <span>Todas as Categorias</span>
+            <i class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: 5px;"></i>
+        </div>
+
+        <!-- MENU FLUTUANTE DE DEPARTAMENTOS -->
+        <div class="categories-dropdown" id="categoriesDropdown">
+            <a href="#mais-vendidos" class="cat-item" onclick="toggleCategoriesMenu()"><i class="fa-solid fa-microchip"></i> Hardware <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i></a>
+            <a href="#mais-vendidos" class="cat-item" onclick="toggleCategoriesMenu()"><i class="fa-solid fa-headphones"></i> Periféricos <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i></a>
+            <a href="#mais-vendidos" class="cat-item" onclick="toggleCategoriesMenu()"><i class="fa-solid fa-desktop"></i> Computadores <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i></a>
+            <a href="#mais-vendidos" class="cat-item" onclick="toggleCategoriesMenu()"><i class="fa-solid fa-bolt"></i> Kit Upgrade <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i></a>
+            <a href="#mais-vendidos" class="cat-item" onclick="toggleCategoriesMenu()"><i class="fa-solid fa-tv"></i> Monitores <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i></a>
+            <a href="#mais-baratos" class="cat-item" onclick="toggleCategoriesMenu()"><i class="fa-solid fa-chair"></i> Cadeiras & Mesas <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i></a>
+            <a href="#novidades" class="cat-item" onclick="toggleCategoriesMenu()"><i class="fa-solid fa-laptop"></i> Notebooks <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i></a>
+            <a href="#novidades" class="cat-item" onclick="toggleCategoriesMenu()"><i class="fa-solid fa-gamepad"></i> Video Games <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i></a>
+            <a href="#novidades" class="cat-item" onclick="toggleCategoriesMenu()"><i class="fa-solid fa-wifi"></i> Redes & Wireless <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i></a>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="#mais-vendidos"><i class="fa-solid fa-fire"></i> Mais Vendidos</a></li>
+            <li><a href="#mais-baratos"><i class="fa-solid fa-tag"></i> Ofertas / Baratos</a></li>
+            <li><a href="#novidades"><i class="fa-solid fa-bolt"></i> Novos no Mundo</a></li>
+        </ul>
+    </nav>
+
+    <!-- CARROSSEL DE BANNERS DE OFERTAS (PASSANDO AUTOMATICAMENTE) -->
+    <div class="carousel-container">
+        <button class="carousel-arrow carousel-prev" onclick="moveSlide(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+
+        <div class="carousel-track">
+            <!-- Banner 1 -->
+            <div class="promo-banner active">
+                <span class="promo-badge"><i class="fa-solid fa-bolt"></i> Mega Oferta Relâmpago</span>
+                <h1 class="promo-title">SETUP GAMER <span>NEXT-GEN</span> COM ATÉ 40% OFF</h1>
+                <p class="promo-desc">Garanta os componentes mais potentes do mercado com frete grátis e parcelamento em até 12x sem juros.</p>
+                <button class="promo-btn" onclick="window.location.href='#mais-vendidos'">Aproveitar Ofertas</button>
+            </div>
+            <!-- Banner 2 -->
+            <div class="promo-banner">
+                <span class="promo-badge" style="background: rgba(0,210,255,0.15); border-color: #00d2ff; color: #00d2ff;"><i class="fa-solid fa-microchip"></i> Lançamento Hardware</span>
+                <h1 class="promo-title">PLACAS DE VÍDEO <span>SÉRIE RTX 40</span></h1>
+                <p class="promo-desc">Desempenho máximo em ray tracing e inteligência artificial para rodar qualquer jogo no ultra.</p>
+                <button class="promo-btn" onclick="window.location.href='#mais-vendidos'">Ver Placas</button>
+            </div>
+            <!-- Banner 3 -->
+            <div class="promo-banner">
+                <span class="promo-badge" style="background: rgba(46,204,113,0.15); border-color: #2ecc71; color: #2ecc71;"><i class="fa-solid fa-tags"></i> Queima de Estoque</span>
+                <h1 class="promo-title">MONITORES 180HZ <span>CURVOS</span></h1>
+                <p class="promo-desc">Imersão completa e tempo de resposta de 1ms com preços imperdíveis por tempo limitado.</p>
+                <button class="promo-btn" onclick="window.location.href='#mais-baratos'">Ver Ofertas</button>
+            </div>
+        </div>
+
+        <button class="carousel-arrow carousel-next" onclick="moveSlide(1)"><i class="fa-solid fa-chevron-right"></i></button>
+
+        <!-- Indicadores (Pontinhos) -->
+        <div class="carousel-dots">
+            <span class="dot active" onclick="currentSlide(0)"></span>
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+        </div>
+    </div>
+
+    <!-- MASCOTE -->
+    <div class="mascot-widget">
+        <div class="mascot-bubble">
+            <strong><i class="fa-solid fa-dragon"></i> NexaDragon</strong>
+            <p>GPS de pedidos e painel de usuário ativos!</p>
+        </div>
+        <div class="mascot-avatar"><i class="fa-solid fa-dragon"></i></div>
+    </div>
+
+    <!-- BANNER DE COOKIES (LGPD) -->
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-content">
+            <div class="cookie-icon"><i class="fa-solid fa-cookie-bite"></i></div>
+            <div class="cookie-text">
+                <h4>Sua privacidade é importante para nós</h4>
+                <p>Utilizamos cookies para personalizar anúncios e melhorar a sua experiência no site. Ao continuar navegando, você concorda com a nossa <a href="#">Política de Privacidade</a>.</p>
+            </div>
+        </div>
+        <div class="cookie-actions">
+            <button class="cookie-btn-reject" onclick="handleCookies('rejected')">Recusar</button>
+            <button class="cookie-btn-accept" onclick="handleCookies('accepted')">Aceitar Todos</button>
+        </div>
+    </div>
+
+    <main class="products-section">
+
+        <!-- 1. MAIS VENDIDOS -->
+        <h2 class="section-title" id="mais-vendidos"><i class="fa-solid fa-fire" style="color: #ff3366;"></i> Os Mais Vendidos</h2>
+        <div class="products-grid">
+
+            <div class="product-card" data-id="201">
+                <button class="fav-btn" onclick="toggleFavorite(201, 'PC Gamer Nexa Ultra - RTX 4060', 4599.00, 'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=700&q=80', this)"><i class="fa-solid fa-heart"></i></button>
+                <div class="product-image-container">
+                    <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=700&q=80" alt="PC Gamer">
+                </div>
+                <span class="slide-tag red">Mais Vendido</span>
+                <div class="product-title">PC Gamer Nexa Ultra (Intel Core i5, RTX 4060, 16GB RAM)</div>
+                <div class="product-old-price">R$ 5.299,00</div>
+                <div class="product-price">R$ 4.599,00</div>
+
+                <div class="quantity-selector">
+                    <button class="qty-btn" onclick="changeQty('qty-201', -1)">-</button>
+                    <input type="text" class="qty-input" id="qty-201" value="1" readonly>
+                    <button class="qty-btn" onclick="changeQty('qty-201', 1)">+</button>
+                </div>
+
+                <button class="add-cart-btn" onclick="addToCart(201, 'PC Gamer Nexa Ultra - RTX 4060', 4599.00, 'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=700&q=80')"><i class="fa-solid fa-cart-plus"></i> Comprar</button>
+            </div>
+
+            <div class="product-card" data-id="202">
+                <button class="fav-btn" onclick="toggleFavorite(202, 'Placa de Vídeo RTX 4070 Super', 3899.00, 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=700&q=80', this)"><i class="fa-solid fa-heart"></i></button>
+                <div class="product-image-container">
+                    <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=700&q=80" alt="Placa de Video">
+                </div>
+                <span class="slide-tag red">Top 1 Hardware</span>
+                <div class="product-title">Placa de Vídeo GeForce RTX 4070 Super 12GB OC</div>
+                <div class="product-old-price">R$ 4.499,00</div>
+                <div class="product-price">R$ 3.899,00</div>
+
+                <div class="quantity-selector">
+                    <button class="qty-btn" onclick="changeQty('qty-202', -1)">-</button>
+                    <input type="text" class="qty-input" id="qty-202" value="1" readonly>
+                    <button class="qty-btn" onclick="changeQty('qty-202', 1)">+</button>
+                </div>
+
+                <button class="add-cart-btn" onclick="addToCart(202, 'Placa de Vídeo RTX 4070 Super', 3899.00, 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=700&q=80')"><i class="fa-solid fa-cart-plus"></i> Comprar</button>
+            </div>
+
+            <div class="product-card" data-id="203">
+                <button class="fav-btn" onclick="toggleFavorite(203, 'Monitor Gamer Curvo 27 180Hz', 1399.00, 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=700&q=80', this)"><i class="fa-solid fa-heart"></i></button>
+                <div class="product-image-container">
+                    <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=700&q=80" alt="Monitor">
+                </div>
+                <span class="slide-tag red">Favorito da Galera</span>
+                <div class="product-title">Monitor Gamer Curvo 27" Full HD, 180Hz, 1ms</div>
+                <div class="product-old-price">R$ 1.799,00</div>
+                <div class="product-price">R$ 1.399,00</div>
+
+                <div class="quantity-selector">
+                    <button class="qty-btn" onclick="changeQty('qty-203', -1)">-</button>
+                    <input type="text" class="qty-input" id="qty-203" value="1" readonly>
+                    <button class="qty-btn" onclick="changeQty('qty-203', 1)">+</button>
+                </div>
+
+                <button class="add-cart-btn" onclick="addToCart(203, 'Monitor Gamer Curvo 27 180Hz', 1399.00, 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=700&q=80')"><i class="fa-solid fa-cart-plus"></i> Comprar</button>
+            </div>
+
+            <div class="product-card" data-id="204">
+                <button class="fav-btn" onclick="toggleFavorite(204, 'Headset Gamer RGB 7.1', 349.00, 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=700&q=80', this)"><i class="fa-solid fa-heart"></i></button>
+                <div class="product-image-container">
+                    <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=700&q=80" alt="Headset">
+                </div>
+                <span class="slide-tag red">Alta Procura</span>
+                <div class="product-title">Headset Gamer Surround 7.1 RGB LED Noise Cancelling</div>
+                <div class="product-old-price">R$ 499,00</div>
+                <div class="product-price">R$ 349,00</div>
+
+                <div class="quantity-selector">
+                    <button class="qty-btn" onclick="changeQty('qty-204', -1)">-</button>
+                    <input type="text" class="qty-input" id="qty-204" value="1" readonly>
+                    <button class="qty-btn" onclick="changeQty('qty-204', 1)">+</button>
+                </div>
+
+                <button class="add-cart-btn" onclick="addToCart(204, 'Headset Gamer RGB 7.1', 349.00, 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=700&q=80')"><i class="fa-solid fa-cart-plus"></i> Comprar</button>
+            </div>
+
+        </div>
+
+        <!-- 2. OS MAIS BARATOS / OFERTAS RELÂMPAGO -->
+        <h2 class="section-title" id="mais-baratos"><i class="fa-solid fa-tags" style="color: #2ecc71;"></i> Os Mais Baratos & Ofertas</h2>
+        <div class="products-grid">
+
+            <div class="product-card" data-id="301">
+                <button class="fav-btn" onclick="toggleFavorite(301, 'Mouse Gamer RGB 7200 DPI', 79.90, 'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=700&q=80', this)"><i class="fa-solid fa-heart"></i></button>
+                <div class="product-image-container">
+                    <img src="https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=700&q=80" alt="Mouse">
+                </div>
+                <span class="slide-tag green">Super Econômico</span>
+                <div class="product-title">Mouse Gamer Ergonômico RGB 7200 DPI Ajustável</div>
+                <div class="product-old-price">R$ 149,90</div>
+                <div class="product-price">R$ 79,90</div>
+
+                <div class="quantity-selector">
+                    <button class="qty-btn" onclick="changeQty('qty-301', -1)">-</button>
+                    <input type="text" class="qty-input" id="qty-301" value="1" readonly>
+                    <button class="qty-btn" onclick="changeQty('qty-301', 1)">+</button>
+                </div>
+
+                <button class="add-cart-btn" onclick="addToCart(301, 'Mouse Gamer RGB 7200 DPI', 79.90, 'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=700&q=80')"><i class="fa-solid fa-cart-plus"></i> Comprar</button>
+            </div>
+
+            <div class="product-card" data-id="302">
+                <button class="fav-btn" onclick="toggleFavorite(302, 'Teclado Mecânico Compacto 60%', 159.90, 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=700&q=80', this)"><i class="fa-solid fa-heart"></i></button>
+                <div class="product-image-container">
+                    <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=700&q=80" alt="Teclado">
+                </div>
+                <span class="slide-tag green">Menor Preço</span>
+                <div class="product-title">Teclado Mecânico Gamer Compacto 60% Switch Blue</div>
+                <div class="product-old-price">R$ 259,90</div>
+                <div class="product-price">R$ 159,90</div>
+
+                <div class="quantity-selector">
+                    <button class="qty-btn" onclick="changeQty('qty-302', -1)">-</button>
+                    <input type="text" class="qty-input" id="qty-302" value="1" readonly>
+                    <button class="qty-btn" onclick="changeQty('qty-302', 1)">+</button>
+                </div>
+
+                <button class="add-cart-btn" onclick="addToCart(302, 'Teclado Mecânico Compacto 60%', 159.90, 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=700&q=80')"><i class="fa-solid fa-cart-plus"></i> Comprar</button>
+            </div>
+
+            <div class="product-card" data-id="303">
+                <button class="fav-btn" onclick="toggleFavorite(303, 'Mousepad Gamer XL Speed', 49.90, 'https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&w=700&q=80', this)"><i class="fa-solid fa-heart"></i></button>
+                <div class="product-image-container">
+                    <img src="https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&w=700&q=80" alt="Mousepad">
+                </div>
+                <span class="slide-tag green">Liquidação</span>
+                <div class="product-title">Mousepad Gamer Speed XL (900x400mm) Base Antiderrapante</div>
+                <div class="product-old-price">R$ 99,90</div>
+                <div class="product-price">R$ 49,90</div>
+
+                <div class="quantity-selector">
+                    <button class="qty-btn" onclick="changeQty('qty-303', -1)">-</button>
+                    <input type="text" class="qty-input" id="qty-303" value="1" readonly>
+                    <button class="qty-btn" onclick="changeQty('qty-303', 1)">+</button>
+                </div>
+
+                <button class="add-cart-btn" onclick="addToCart(303, 'Mousepad Gamer XL Speed', 49.90, 'https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&w=700&q=80')"><i class="fa-solid fa-cart-plus"></i> Comprar</button>
+            </div>
+
+            <div class="product-card" data-id="304">
+                <button class="fav-btn" onclick="toggleFavorite(304, 'Cooler Fan RGB 120mm', 39.90, 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?auto=format&fit=crop&w=700&q=80', this)"><i class="fa-solid fa-heart"></i></button>
+                <div class="product-image-container">
+                    <img src="https://images.unsplash.com/photo-1587202372634-32705e3bf49c?auto=format&fit=crop&w=700&q=80" alt="Cooler">
+                </div>
+                <span class="slide-tag green">Imperdível</span>
+                <div class="product-title">Cooler Fan RGB LED 120mm Silencioso para Gabinete</div>
+                <div class="product-old-price">R$ 79,90</div>
+                <div class="product-price">R$ 39,90</div>
+
+                <div class="quantity-selector">
+                    <button class="qty-btn" onclick="changeQty('qty-304', -1)">-</button>
+                    <input type="text" class="qty-input" id="qty-304" value="1" readonly>
+                    <button class="qty-btn" onclick="changeQty('qty-304', 1)">+</button>
+                </div>
+
+                <button class="add-cart-btn" onclick="addToCart(304, 'Cooler Fan RGB 120mm', 39.90, 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?auto=format&fit=crop&w=700&q=80')"><i class="fa-solid fa-cart-plus"></i> Comprar</button>
+            </div>
+
+        </div>
+
+        <!-- 3. OS MAIS POPULARES / NOVOS NO MUNDO -->
+        <h2 class="section-title" id="novidades"><i class="fa-solid fa-globe" style="color: #00d2ff;"></i> Populares & Novos no Mundo</h2>
+        <div class="products-grid">
+
+            <div class="product-card" data-id="401">
+                <button class="fav-btn" onclick="toggleFavorite(401, 'Processador AMD Ryzen 7 9700X', 2499.00, 'https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&w=700&q=80', this)"><i class="fa-solid fa-heart"></i></button>
+                <div class="product-image-container">
+                    <img src="https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&w=700&q=80" alt="Processador">
+                </div>
+                <span class="slide-tag">Lançamento Global</span>
+                <div class="product-title">Processador AMD Ryzen 7 (Arquitetura de Última Geração)</div>
+                <div class="product-old-price">R$ 2.899,00</div>
+                <div class="product-price">R$ 2.499,00</div>
+
+                <div class="quantity-selector">
+                    <button class="qty-btn" onclick="changeQty('qty-401', -1)">-</button>
+                    <input type="text" class="qty-input" id="qty-401" value="1" readonly>
+                    <button class="qty-btn" onclick="changeQty('qty-401', 1)">+</button>
+                </div>
+
+                <button class="add-cart-btn" onclick="addToCart(401, 'Processador AMD Ryzen 7 9700X', 2499.00, 'https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&w=700&q=80')"><i class="fa-solid fa-cart-plus"></i> Comprar</button>
+            </div>
+
+            <div class="product-card" data-id="402">
+                <button class="fav-btn" onclick="toggleFavorite(402, 'Placa Mãe X870 Aorus Master', 3199.00, 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=700&q=80', this)"><i class="fa-solid fa-heart"></i></button>
+                <div class="product-image-container">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=700&q=80" alt="Placa Mae">
+                </div>
+                <span class="slide-tag">Novidade Tech</span>
+                <div class="product-title">Placa Mãe High-End com Suporte a IA & PCIe 5.0</div>
+                <div class="product-old-price">R$ 3.699,00</div>
+                <div class="product-price">R$ 3.199,00</div>
+
+                <div class="quantity-selector">
+                    <button class="qty-btn" onclick="changeQty('qty-402', -1)">-</button>
+                    <input type="text" class="qty-input" id="qty-402" value="1" readonly>
+                    <button class="qty-btn" onclick="changeQty('qty-402', 1)">+</button>
+                </div>
+
+                <button class="add-cart-btn" onclick="addToCart(402, 'Placa Mãe X870 Aorus Master', 3199.00, 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=700&q=80')"><i class="fa-solid fa-cart-plus"></i> Comprar</button>
+            </div>
+
+            <div class="product-card" data-id="403">
+                <button class="fav-btn" onclick="toggleFavorite(403, 'Kit Memória RAM 32GB DDR5 6000MHz', 999.00, 'https://images.unsplash.com/photo-1562976540-1e02c914ea8f?auto=format&fit=crop&w=700&q=80', this)"><i class="fa-solid fa-heart"></i></button>
+                <div class="product-image-container">
+                    <img src="https://images.unsplash.com/photo-1562976540-1e02c914ea8f?auto=format&fit=crop&w=700&q=80" alt="Memoria RAM">
+                </div>
+                <span class="slide-tag">Tecnologia DDR5</span>
+                <div class="product-title">Kit Memória RAM 32GB (2x16GB) DDR5 RGB Extreme Performance</div>
+                <div class="product-old-price">R$ 1.299,00</div>
+                <div class="product-price">R$ 999,00</div>
+
+                <div class="quantity-selector">
+                    <button class="qty-btn" onclick="changeQty('qty-403', -1)">-</button>
+                    <input type="text" class="qty-input" id="qty-403" value="1" readonly>
+                    <button class="qty-btn" onclick="changeQty('qty-403', 1)">+</button>
+                </div>
+
+                <button class="add-cart-btn" onclick="addToCart(403, 'Kit Memória RAM 32GB DDR5 6000MHz', 999.00, 'https://images.unsplash.com/photo-1562976540-1e02c914ea8f?auto=format&fit=crop&w=700&q=80')"><i class="fa-solid fa-cart-plus"></i> Comprar</button>
+            </div>
+
+            <div class="product-card" data-id="404">
+                <button class="fav-btn" onclick="toggleFavorite(404, 'SSD M.2 NVMe 2TB Gen4', 899.00, 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=700&q=80', this)"><i class="fa-solid fa-heart"></i></button>
+                <div class="product-image-container">
+                    <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=700&q=80" alt="SSD">
+                </div>
+                <span class="slide-tag">Ultra Velocidade</span>
+                <div class="product-title">SSD M.2 NVMe 2TB Leitura 7400MB/s com Dissipador</div>
+                <div class="product-old-price">R$ 1.199,00</div>
+                <div class="product-price">R$ 899,00</div>
+
+                <div class="quantity-selector">
+                    <button class="qty-btn" onclick="changeQty('qty-404', -1)">-</button>
+                    <input type="text" class="qty-input" id="qty-404" value="1" readonly>
+                    <button class="qty-btn" onclick="changeQty('qty-404', 1)">+</button>
+                </div>
+
+                <button class="add-cart-btn" onclick="addToCart(404, 'SSD M.2 NVMe 2TB Gen4', 899.00, 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=700&q=80')"><i class="fa-solid fa-cart-plus"></i> Comprar</button>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- RODAPÉ ESTILO E-COMMERCE COMPLETO -->
+    <footer class="site-security-footer">
+
+        <!-- Links de Departamentos e Institucional -->
+        <div class="footer-links-grid">
+            <div class="footer-col">
+                <h4>Departamentos</h4>
+                <ul>
+                    <li><a href="#">Hardware</a></li>
+                    <li><a href="#">Periféricos</a></li>
+                    <li><a href="#">Computadores</a></li>
+                    <li><a href="#">Kit Upgrade</a></li>
+                    <li><a href="#">Monitores</a></li>
+                    <li><a href="#">Cadeiras e Mesas Gamer</a></li>
+                    <li><a href="#">Notebooks e Portáteis</a></li>
+                    <li><a href="#">Video Games</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Institucional</h4>
+                <ul>
+                    <li><a href="#">Quem somos</a></li>
+                    <li><a href="#">Localização</a></li>
+                    <li><a href="#">Nossas Lojas</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Dúvidas & Ajuda</h4>
+                <ul>
+                    <li><a href="#">Entrega</a></li>
+                    <li><a href="#">Garantia</a></li>
+                    <li><a href="#">Como comprar</a></li>
+                    <li><a href="#">Formas de Pagamento</a></li>
+                    <li><a href="#">Sobre Boletos</a></li>
+                    <li><a href="#">SAC / Fale conosco</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Termos & Privacidade</h4>
+                <ul>
+                    <li><a href="#">Termos de aceite</a></li>
+                    <li><a href="#">Políticas de Privacidade</a></li>
+                    <li><a href="#">Openbox</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Newsletter -->
+        <div class="footer-newsletter">
+            <div class="newsletter-content">
+                <h4><i class="fa-solid fa-envelope"></i> Receba ofertas exclusivas no seu e-mail</h4>
+                <p>Fique por dentro das novidades e promoções em primeira mão.</p>
+            </div>
+            <div class="newsletter-form">
+                <input type="email" placeholder="Digite seu e-mail...">
+                <button onclick="alert('Inscrito com sucesso!')">Inscrever</button>
+            </div>
+        </div>
+
+        <!-- Pilares de Segurança -->
+        <div class="security-grid">
+            <div class="security-box">
+                <div class="security-box-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <div class="security-box-content">
+                    <h3>Criptografia de Ponta a Ponta</h3>
+                    <p>Comunicações protegidas por criptografia SSL de 256 bits, garantindo total sigilo.</p>
+                </div>
+            </div>
+
+            <div class="security-box">
+                <div class="security-box-icon"><i class="fa-solid fa-user-shield"></i></div>
+                <div class="security-box-content">
+                    <h3>Privacidade & LGPD</h3>
+                    <p>Respeito total à Lei Geral de Proteção de Dados. Seus dados seguros e privados.</p>
+                </div>
+            </div>
+
+            <div class="security-box">
+                <div class="security-box-icon"><i class="fa-solid fa-lock"></i></div>
+                <div class="security-box-content">
+                    <h3>Pagamento Seguro</h3>
+                    <p>Transações financeiras operam em camadas isoladas com os padrões mais rígidos.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Selo / Certificado SSL Digital -->
+        <div class="ssl-certificate-banner">
+            <div class="ssl-badge-info">
+                <div class="ssl-shield-icon"><i class="fa-solid fa-certificate"></i></div>
+                <div class="ssl-text">
+                    <h4>NexaTech Blindada <span>SSL Ativo</span></h4>
+                    <p>Certificado Digital Verificado e Autenticado por Autoridade Criptográfica.</p>
+                </div>
+            </div>
+            <div class="ssl-verify-pills">
+                <div class="verify-pill"><i class="fa-solid fa-check"></i> Site Seguro</div>
+                <div class="verify-pill"><i class="fa-solid fa-lock"></i> 256-Bit SSL</div>
+                <div class="verify-pill"><i class="fa-solid fa-shield"></i> Proteção Ativa</div>
+            </div>
+        </div>
+
+        <!-- Informações Legais e CNPJ -->
+        <div class="footer-legal-info">
+            <p><strong>NEXATECH INFORMÁTICA® É UMA MARCA REGISTRADA</strong> | CNPJ: 00.000.000/0001-00</p>
+            <p>Endereço: Avenida Exemplo, 1234 - Bairro Digital, Cidade - SC - 00000-000</p>
+            <p class="disclaimer">Preços e condições de pagamento exclusivos para compras via internet e podem variar nas lojas físicas. Os preços anunciados neste site ou via e-mail promocional podem ser alterados sem prévio aviso. As fotos contidas nesta página são meramente
+                ilustrativas.
+            </p>
+        </div>
+
+        <div class="footer-copyright">
+            <p>&copy; 2026 NexaTech Hardware. Todos os direitos reservados. Made with <i class="fa-solid fa-heart" style="color: #ff3366;"></i> by NexaTech.</p>
+        </div>
+    </footer>
+
+    <!-- MODAL DE ATENDIMENTO / WHATSAPP -->
+    <div class="modal-overlay" id="modalAtendimento">
+        <div class="modal-card">
+            <button class="close-btn" onclick="fecharAtendimento()"><i class="fa-solid fa-xmark"></i></button>
+            <h2 class="modal-title"><i class="fa-brands fa-whatsapp" style="color: #25d366; font-size: 26px;"></i> Atendimento NexaTech</h2>
+            <p style="color: #94a3b8; font-size: 13px; line-height: 1.5; margin-bottom: 20px;">
+                Fale instantaneamente com nossa equipe de especialistas através do WhatsApp oficial da loja. Digite sua dúvida abaixo:
+            </p>
+            <div class="form-group">
+                <label>Como podemos te ajudar?</label>
+                <input type="text" id="msgWhatsapp" placeholder="Ex: Dúvida sobre o frete da placa de vídeo...">
+            </div>
+            <a href="#" id="btnEnviarZap" class="modal-submit-btn whatsapp" onclick="enviarWhatsApp(event)">
+                <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> Iniciar Conversa no WhatsApp
+            </a>
+        </div>
+    </div>
+
+    <!-- MODAL DE DADOS DO USUÁRIO E CONTA -->
+    <div class="modal-overlay" id="modalConta">
+        <div class="modal-card">
+            <button class="close-btn" onclick="fecharModalConta()"><i class="fa-solid fa-xmark"></i></button>
+
+            <!-- TELA DE LOGIN / CADASTRO (CASO NÃO LOGADO) -->
+            <div id="authContainerView">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" id="tabEntrar" onclick="alternarAba('entrar')">Entrar</button>
+                    <button class="auth-tab" id="tabCriar" onclick="alternarAba('criar')">Criar Conta</button>
+                </div>
+
+                <div id="formEntrarContainer">
+                    <h2 class="modal-title" style="font-size: 18px; margin-bottom: 15px;">Acessar sua Conta</h2>
+                    <div class="form-group">
+                        <label>E-mail cadastrado</label>
+                        <input type="email" id="loginEmail" placeholder="seu@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Senha</label>
+                        <input type="password" id="loginSenha" placeholder="Sua senha">
+                    </div>
+                    <button class="modal-submit-btn" onclick="fazerLogin()">Entrar na Conta</button>
+                </div>
+
+                <div id="formCriarContainer" style="display: none;">
+                    <h2 class="modal-title" style="font-size: 18px; margin-bottom: 15px;">Criar Novo Cadastro</h2>
+                    <div class="form-group">
+                        <label>Seu Nome</label>
+                        <input type="text" id="regNome" placeholder="Nome completo">
+                    </div>
+                    <div class="form-group">
+                        <label>Seu E-mail</label>
+                        <input type="email" id="regEmail" placeholder="seu@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Telefone / WhatsApp</label>
+                        <input type="text" id="regTel" placeholder="(11) 99999-9999">
+                    </div>
+                    <div class="form-group">
+                        <label>Crie uma Senha</label>
+                        <input type="password" id="regSenha" placeholder="Mínimo 6 caracteres">
+                    </div>
+                    <button class="modal-submit-btn" onclick="cadastrarConta()">Cadastrar Conta</button>
+                </div>
+            </div>
+
+            <!-- TELA DE PERFIL E DADOS DO USUÁRIO LOGADO -->
+            <div id="userProfileView" style="display: none;">
+                <h2 class="modal-title" style="font-size: 18px;"><i class="fa-solid fa-id-card" style="color: #00d2ff;"></i> Dados da Conta</h2>
+                <div style="background: #0d0e12; border: 1px solid #262933; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+                    <p style="font-size: 13px; color: #94a3b8; margin-bottom: 6px;"><strong>Nome:</strong> <span id="perfilNome" style="color:#fff;">-</span></p>
+                    <p style="font-size: 13px; color: #94a3b8; margin-bottom: 6px;"><strong>E-mail:</strong> <span id="perfilEmail" style="color:#fff;">-</span></p>
+                    <p style="font-size: 13px; color: #94a3b8;"><strong>Telefone:</strong> <span id="perfilTel" style="color:#fff;">-</span></p>
+                </div>
+                <h3 style="font-size: 14px; margin-bottom: 10px; color: #00d2ff;"><i class="fa-solid fa-box"></i> Meus Pedidos Recentes & GPS</h3>
+                <div id="userPedidosList" style="max-height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px;">
+                    <!-- Pedidos injetados dinamicamente -->
+                </div>
+                <button class="checkout-btn" style="background: #ff3366;" onclick="fazerLogout()">Sair da Conta</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL DO CARRINHO E CHECKOUT COM PAGAMENTO E GPS -->
+    <div class="modal-overlay" id="cartModal">
+        <div class="modal-card">
+            <button class="close-btn" onclick="closeCartModal()"><i class="fa-solid fa-xmark"></i></button>
+
+            <!-- TELA 1: CARRINHO -->
+            <div id="cartContentWrapper">
+                <h2 class="modal-title"><i class="fa-solid fa-cart-shopping" style="color: #00d2ff;"></i> Meu Carrinho</h2>
+                <div class="cart-list" id="cartListContent"></div>
+                <div style="border-top: 1px solid #262933; padding-top: 15px;">
+                    <div class="cart-total" style="margin-bottom:12px;"><span>Total:</span><span id="cartTotalValue">R$ 0,00</span></div>
+                    <button class="checkout-btn" onclick="irParaCheckout()">Ir para o Checkout & Pagamento</button>
+                </div>
+            </div>
+
+            <!-- TELA 2: CHECKOUT (PAGAMENTO E DADOS DE ENTREGA) -->
+            <div id="checkoutInterfaceContainer" style="display: none;">
+                <h2 class="modal-title" style="font-size: 18px;"><i class="fa-solid fa-credit-card" style="color: #00d2ff;"></i> Pagamento & Entrega</h2>
+
+                <div id="checkoutSummaryDetails" style="background: #0d0e12; border: 1px solid #262933; padding: 12px; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; gap: 12px;"></div>
+
+                <div class="form-group">
+                    <label>Escolha a Forma de Pagamento</label>
+                    <div class="pay-options">
+                        <div class="pay-option-card active" id="payPix" onclick="selecionarPagamento('pix')">
+                            <i class="fa-solid fa-qrcode"></i> PIX (Aprovação Inst.)
+                        </div>
+                        <div class="pay-option-card" id="payCard" onclick="selecionarPagamento('card')">
+                            <i class="fa-solid fa-credit-card"></i> Cartão 12x
+                        </div>
+                        <div class="pay-option-card" id="payBoleto" onclick="selecionarPagamento('boleto')">
+                            <i class="fa-solid fa-barcode"></i> Boleto Bancário
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CAMPO DINÂMICO DE PAGAMENTO -->
+                <div id="paymentDetailsArea" style="background: #0d0e12; border: 1px solid #262933; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 12px; text-align: center;">
+                    <span style="color: #25d366; font-weight: bold;">Chave PIX Copia e Cola gerada com 5% de desconto!</span><br>
+                    <input type="text" value="00020126580014br.gov.bcb.pix..." readonly style="width: 100%; margin-top: 8px; background: #16181e; border: 1px solid #262933; color: #fff; padding: 6px; text-align: center; border-radius: 4px;">
+                </div>
+
+                <div class="form-group">
+                    <label>Nome do Comprador</label>
+                    <input type="text" id="checkoutNome" placeholder="Digite seu nome">
+                </div>
+                <div class="form-group">
+                    <label>Endereço Completo</label>
+                    <input type="text" id="checkoutEndereco" placeholder="Rua, número, bairro, cidade">
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="checkout-btn" style="background: #262933; color: #fff;" onclick="voltarAoCarrinho()">Voltar</button>
+                    <button class="checkout-btn" onclick="finalizarCompraComSucesso()">Finalizar Pedido</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL DE RASTREIO GPS DO PEDIDO -->
+    <div class="modal-overlay" id="gpsModal">
+        <div class="modal-card">
+            <button class="close-btn" onclick="closeGpsModal()"><i class="fa-solid fa-xmark"></i></button>
+            <h2 class="modal-title"><i class="fa-solid fa-location-dot" style="color: #00d2ff;"></i> Rastreio GPS do Pedido</h2>
+            <p style="font-size: 13px; color: #94a3b8; margin-bottom: 15px;">Acompanhe em tempo real a rota do seu hardware até o seu endereço.</p>
+
+            <div style="background: #0d0e12; border: 1px solid #00d2ff; padding: 12px; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-truck-fast" style="font-size: 24px; color: #00d2ff;"></i>
+                <div>
+                    <strong style="font-size: 13px;" id="gpsProdutoNome">Produto em rota</strong><br>
+                    <span style="font-size: 11px; color: #2ecc71;" id="gpsStatusTexto">Status: Saiu para entrega na sua região</span>
+                </div>
+            </div>
+
+            <div class="gps-tracker-box">
+                <span style="font-size: 12px; font-weight: bold; color: #fff;">Linha do Tempo GPS</span>
+                <div class="gps-steps">
+                    <div class="gps-step completed" id="step1">
+                        <div class="gps-step-icon"><i class="fa-solid fa-check"></i></div>
+                        <span>Aprovado</span>
+                    </div>
+                    <div class="gps-step completed" id="step2">
+                        <div class="gps-step-icon"><i class="fa-solid fa-check"></i></div>
+                        <span>Embalado</span>
+                    </div>
+                    <div class="gps-step completed" id="step3">
+                        <div class="gps-step-icon"><i class="fa-solid fa-truck"></i></div>
+                        <span>Em Rota</span>
+                    </div>
+                    <div class="gps-step" id="step4">
+                        <div class="gps-step-icon"><i class="fa-solid fa-house"></i></div>
+                        <span>Entregue</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE FAVORITOS -->
+    <div class="modal-overlay" id="favModal">
+        <div class="modal-card">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <h2 class="modal-title">Meus Favoritos</h2>
+                <button class="close-btn" onclick="closeFavModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="cart-list" id="favListContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // CURSOR
+        const customCursor = document.getElementById('customCursor');
+        document.addEventListener('mousemove', (e) => {
+            customCursor.style.left = e.clientX + 'px';
+            customCursor.style.top = e.clientY + 'px';
+        });
+        document.querySelectorAll('a, button, input').forEach(el => {
+            el.addEventListener('mouseenter', () => customCursor.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => customCursor.classList.remove('hovered'));
+        });
+
+        // 1. BARRA DE PESQUISA INTELIGENTE FUNCIONAL
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                const termo = e.target.value.toLowerCase();
+                const cardsProdutos = document.querySelectorAll('.product-card');
+
+                cardsProdutos.forEach(card => {
+                    const nomeProduto = card.querySelector('.product-title').innerText.toLowerCase();
+                    if (nomeProduto.includes(termo)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // 2. ATENDIMENTO COM WHATSAPP
+        function abrirAtendimento() {
+            document.getElementById('modalAtendimento').classList.add('active');
+        }
+
+        function fecharAtendimento() {
+            document.getElementById('modalAtendimento').classList.remove('active');
+        }
+
+        function enviarWhatsApp(e) {
+            e.preventDefault();
+            const texto = document.getElementById('msgWhatsapp').value || "Olá, preciso de suporte na NexaTech!";
+            const numeroWhatsApp = "5511999999999";
+            const url = `https://api.whatsapp.com/send?phone=${numeroWhatsApp}&text=${encodeURIComponent(texto)}`;
+            window.open(url, '_blank');
+            fecharAtendimento();
+        }
+
+        // 3. SISTEMA DE PERFIL E DADOS DO USUÁRIO
+        function abrirPainelUsuario() {
+            const emailSalvo = localStorage.getItem('nexaUserEmail');
+            if (emailSalvo) {
+                // Abre painel de dados do usuário logado
+                document.getElementById('authContainerView').style.display = 'none';
+                document.getElementById('userProfileView').style.display = 'block';
+                carregarDadosPerfil();
+            } else {
+                // Abre tela de login/cadastro
+                document.getElementById('authContainerView').style.display = 'block';
+                document.getElementById('userProfileView').style.display = 'none';
+            }
+            document.getElementById('modalConta').classList.add('active');
+        }
+
+        function fecharModalConta() {
+            document.getElementById('modalConta').classList.remove('active');
+        }
+
+        function alternarAba(aba) {
+            const tabEntrar = document.getElementById('tabEntrar');
+            const tabCriar = document.getElementById('tabCriar');
+            const formEntrar = document.getElementById('formEntrarContainer');
+            const formCriar = document.getElementById('formCriarContainer');
+
+            if (aba === 'entrar') {
+                tabEntrar.classList.add('active');
+                tabCriar.classList.remove('active');
+                formEntrar.style.display = 'block';
+                formCriar.style.display = 'none';
+            } else {
+                tabCriar.classList.add('active');
+                tabEntrar.classList.remove('active');
+                formCriar.style.display = 'block';
+                formEntrar.style.display = 'none';
+            }
+        }
+
+        function cadastrarConta() {
+            const nome = document.getElementById('regNome').value;
+            const email = document.getElementById('regEmail').value;
+            const tel = document.getElementById('regTel').value;
+            const senha = document.getElementById('regSenha').value;
+
+            if (!nome || !email || !senha) {
+                alert('Preencha os campos obrigatórios para cadastrar.');
+                return;
+            }
+
+            localStorage.setItem('nexaUserName', nome);
+            localStorage.setItem('nexaUserEmail', email);
+            localStorage.setItem('nexaUserTel', tel || '(11) 98888-7777');
+            localStorage.setItem('nexaUserPass', senha);
+
+            alert(`Conta criada com sucesso para ${nome}!`);
+            atualizarInterfaceUsuario();
+            abrirPainelUsuario();
+        }
+
+        function fazerLogin() {
+            const emailInput = document.getElementById('loginEmail').value;
+            const senhaInput = document.getElementById('loginSenha').value;
+            const emailSalvo = localStorage.getItem('nexaUserEmail');
+            const senhaSalva = localStorage.getItem('nexaUserPass');
+            const nomeSalvo = localStorage.getItem('nexaUserName') || "Cliente NexaTech";
+
+            if (!emailInput || !senhaInput) {
+                alert('Preencha e-mail e senha.');
+                return;
+            }
+
+            if ((emailInput === emailSalvo && senhaInput === senhaSalva) || emailInput.includes('@')) {
+                localStorage.setItem('nexaUserEmail', emailInput);
+                if (!localStorage.getItem('nexaUserName')) localStorage.setItem('nexaUserName', 'Cliente NexaTech');
+                if (!localStorage.getItem('nexaUserTel')) localStorage.setItem('nexaUserTel', '(11) 98888-7777');
+
+                alert(`Bem-vindo de volta!`);
+                atualizarInterfaceUsuario();
+                abrirPainelUsuario();
+            } else {
+                alert('Credenciais inválidas ou conta não encontrada.');
+            }
+        }
+
+        function fazerLogout() {
+            localStorage.removeItem('nexaUserEmail');
+            localStorage.removeItem('nexaUserName');
+            localStorage.removeItem('nexaUserTel');
+            alert('Você saiu da sua conta.');
+            atualizarInterfaceUsuario();
+            fecharModalConta();
+        }
+
+        function carregarDadosPerfil() {
+            document.getElementById('perfilNome').innerText = localStorage.getItem('nexaUserName') || 'Não informado';
+            document.getElementById('perfilEmail').innerText = localStorage.getItem('nexaUserEmail') || 'Não informado';
+            document.getElementById('perfilTel').innerText = localStorage.getItem('nexaUserTel') || '(11) 98888-7777';
+
+            // Carrega histórico de pedidos com opção de ver GPS
+            const pedidos = JSON.parse(localStorage.getItem('nexa_pedidos')) || [];
+            const container = document.getElementById('userPedidosList');
+            if (pedidos.length === 0) {
+                container.innerHTML = '<span style="font-size: 12px; color: #717a8a;">Nenhum pedido recente registrado.</span>';
+            } else {
+                container.innerHTML = pedidos.map((p, idx) => `
+                    <div style="background: #16181e; border: 1px solid #262933; padding: 10px; border-radius: 6px; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <strong style="font-size: 12px; color:#fff;">Pedido #${idx+1}: ${p.produto}</strong><br>
+                            <span style="font-size: 10px; color:#00d2ff;">Total: R$ ${p.total.toFixed(2)} (${p.pagamento})</span>
+                        </div>
+                        <button onclick="abrirGpsPedido('${p.produto}')" style="background:#00d2ff; border:none; padding:6px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">Ver GPS</button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function atualizarInterfaceUsuario() {
+            const emailSalvo = localStorage.getItem('nexaUserEmail');
+            const nomeSalvo = localStorage.getItem('nexaUserName');
+            const textoConta = document.getElementById('btnEntrarText');
+
+            if (emailSalvo && textoConta) {
+                textoConta.innerText = nomeSalvo ? nomeSalvo.split(' ')[0] : emailSalvo.split('@')[0];
+                textoConta.style.color = '#00d2ff';
+            } else if (textoConta) {
+                textoConta.innerText = "Entrada / Conta";
+                textoConta.style.color = "#fff";
+            }
+        }
+        window.addEventListener('DOMContentLoaded', atualizarInterfaceUsuario);
+
+        // LÓGICA DO CARROSSEL DE BANNERS
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.promo-banner');
+        const dots = document.querySelectorAll('.dot');
+        let slideInterval = setInterval(autoSlide, 4000);
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+
+            slideIndex = (index + slides.length) % slides.length;
+
+            slides[slideIndex].classList.add('active');
+            dots[slideIndex].classList.add('active');
+        }
+
+        function moveSlide(n) {
+            clearInterval(slideInterval);
+            showSlide(slideIndex + n);
+            slideInterval = setInterval(autoSlide, 4000);
+        }
+
+        function currentSlide(n) {
+            clearInterval(slideInterval);
+            showSlide(n);
+            slideInterval = setInterval(autoSlide, 4000);
+        }
+
+        function autoSlide() {
+            showSlide(slideIndex + 1);
+        }
+
+        // MENU DE CATEGORIAS
+        function toggleCategoriesMenu() {
+            const dropdown = document.getElementById('categoriesDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        window.addEventListener('click', function(e) {
+            const btn = document.querySelector('.all-categories-btn');
+            const dropdown = document.getElementById('categoriesDropdown');
+            if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        function changeQty(inputId, change) {
+            const input = document.getElementById(inputId);
+            let val = parseInt(input.value) + change;
+            if (val < 1) val = 1;
+            input.value = val;
+        }
+
+        function handleCookies(action) {
+            localStorage.setItem('nexatech_cookie_consent', action);
+            document.getElementById('cookieBanner').classList.add('hidden');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const consent = localStorage.getItem('nexatech_cookie_consent');
+            if (consent) {
+                document.getElementById('cookieBanner').classList.add('hidden');
+            }
+        });
+
+        // CARRINHO E CHECKOUT COM PAGAMENTO E FOTO
+        let cart = JSON.parse(localStorage.getItem('nexatech_cart')) || [];
+        let formaPagamentoSelecionada = 'pix';
+
+        function addToCart(id, title, price, image) {
+            const qtyInput = document.getElementById('qty-' + id);
+            const quantity = qtyInput ? parseInt(qtyInput.value) : 1;
+
+            const index = cart.findIndex(item => item.id === id);
+            if (index > -1) {
+                cart[index].qty += quantity;
+            } else {
+                cart.push({
+                    id,
+                    title,
+                    price,
+                    image,
+                    qty: quantity
+                });
+            }
+            localStorage.setItem('nexatech_cart', JSON.stringify(cart));
+            updateCartUI();
+            openCartModal();
+        }
+
+        function updateCartUI() {
+            document.getElementById('cartCount').innerText = cart.reduce((sum, item) => sum + item.qty, 0);
+            const content = document.getElementById('cartListContent');
+            let total = 0;
+            if (cart.length === 0) {
+                content.innerHTML = '<div style="text-align:center; color:#717a8a; padding:20px;">Carrinho vazio.</div>';
+            } else {
+                content.innerHTML = cart.map(item => {
+                    total += item.price * item.qty;
+                    return `<div class="cart-item">
+                        <img src="${item.image}" alt="${item.title}">
+                        <div style="flex:1;"><strong>${item.title}</strong><br><span style="color:#00d2ff; font-size:12px;">R$ ${item.price.toFixed(2)} un.</span></div>
+                        <div style="font-weight:bold;">x${item.qty}</div>
+                    </div>`;
+                }).join('');
+            }
+            document.getElementById('cartTotalValue').innerText = `R$ ${total.toFixed(2)}`;
+        }
+
+        function openCartModal() {
+            document.getElementById('cartModal').classList.add('active');
+            voltarAoCarrinho();
+        }
+
+        function closeCartModal() {
+            document.getElementById('cartModal').classList.remove('active');
+        }
+
+        function irParaCheckout() {
+            if (cart.length === 0) {
+                alert('Seu carrinho está vazio!');
+                return;
+            }
+            document.getElementById('cartContentWrapper').style.display = 'none';
+            document.getElementById('checkoutInterfaceContainer').style.display = 'block';
+
+            const itemPrincipal = cart[cart.length - 1];
+            const totalGeral = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+
+            document.getElementById('checkoutSummaryDetails').innerHTML = `
+                <img src="${itemPrincipal.image}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid #262933;" alt="Produto">
+                <div style="flex:1; font-size: 13px;">
+                    <strong>${itemPrincipal.title}</strong><br>
+                    <span style="color: #00d2ff; font-weight: bold;">Total Geral: R$ ${totalGeral.toFixed(2)}</span>
+                </div>
+            `;
+
+            // Preenche automaticamente o nome se logado
+            const nomeLogado = localStorage.getItem('nexaUserName');
+            if (nomeLogado) document.getElementById('checkoutNome').value = nomeLogado;
+        }
+
+        function voltarAoCarrinho() {
+            document.getElementById('checkoutInterfaceContainer').style.display = 'none';
+            document.getElementById('cartContentWrapper').style.display = 'block';
+        }
+
+        function selecionarPagamento(tipo) {
+            formaPagamentoSelecionada = tipo;
+            document.querySelectorAll('.pay-option-card').forEach(el => el.classList.remove('active'));
+
+            const area = document.getElementById('paymentDetailsArea');
+            if (tipo === 'pix') {
+                document.getElementById('payPix').classList.add('active');
+                area.innerHTML = `<span style="color: #25d366; font-weight: bold;"><i class="fa-solid fa-qrcode"></i> PIX gerado com 5% de desconto!</span><br><input type="text" value="00020126580014br.gov.bcb.pix.nexa..." readonly style="width: 100%; margin-top: 8px; background: #16181e; border: 1px solid #262933; color: #fff; padding: 6px; text-align: center; border-radius: 4px;">`;
+            } else if (tipo === 'card') {
+                document.getElementById('payCard').classList.add('active');
+                area.innerHTML = `<div style="text-align:left; display:flex; flex-direction:column; gap:6px;"><label>Número do Cartão</label><input type="text" placeholder="4000 0000 0000 0000" style="background:#16181e; border:1px solid #262933; color:#fff; padding:6px; border-radius:4px;"><div style="display:flex; gap:6px;"><input type="text" placeholder="MM/AA" style="background:#16181e; border:1px solid #262933; color:#fff; padding:6px; border-radius:4px; width:50%;"><input type="text" placeholder="CVV" style="background:#16181e; border:1px solid #262933; color:#fff; padding:6px; border-radius:4px; width:50%;"></div></div>`;
+            } else {
+                document.getElementById('payBoleto').classList.add('active');
+                area.innerHTML = `<span style="color: #ff3366; font-weight: bold;"><i class="fa-solid fa-barcode"></i> Boleto Bancário Gerado!</span><p style="color:#94a3b8; font-size:11px; margin-top:4px;">Vencimento em 2 dias úteis. O envio ocorre após a compensação.</p>`;
+            }
+        }
+
+        function finalizarCompraComSucesso() {
+            const nome = document.getElementById('checkoutNome').value;
+            const endereco = document.getElementById('checkoutEndereco').value;
+
+            if (!nome || !endereco) {
+                alert('Por favor, preencha o nome e o endereço de entrega.');
+                return;
+            }
+
+            const totalGeral = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+            const produtoNome = cart[cart.length - 1].title;
+
+            // Salva pedido no histórico para o GPS e Dados do Usuário
+            let pedidos = JSON.parse(localStorage.getItem('nexa_pedidos')) || [];
+            pedidos.push({
+                produto: produtoNome,
+                total: totalGeral,
+                pagamento: formaPagamentoSelecionada.toUpperCase(),
+                endereco: endereco
+            });
+            localStorage.setItem('nexa_pedidos', JSON.stringify(pedidos));
+
+            alert(`Pedido finalizado com sucesso, ${nome}! Acompanhe o status e o GPS pelo painel do usuário.`);
+            cart = [];
+            localStorage.removeItem('nexatech_cart');
+            updateCartUI();
+            closeCartModal();
+            abrirGpsPedido(produtoNome);
+        }
+
+        function abrirGpsPedido(nomeProduto) {
+            document.getElementById('gpsProdutoNome').innerText = nomeProduto;
+            document.getElementById('gpsModal').classList.add('active');
+        }
+
+        function closeGpsModal() {
+            document.getElementById('gpsModal').classList.remove('active');
+        }
+
+        // FAVORITOS
+        let favorites = JSON.parse(localStorage.getItem('nexatech_favs')) || [];
+
+        function toggleFavorite(id, title, price, image, btn) {
+            const index = favorites.findIndex(item => item.id === id);
+            if (index === -1) {
+                favorites.push({
+                    id,
+                    title,
+                    price,
+                    image
+                });
+                btn.classList.add('active');
+            } else {
+                favorites.splice(index, 1);
+                btn.classList.remove('active');
+            }
+            localStorage.setItem('nexatech_favs', JSON.stringify(favorites));
+            document.getElementById('favCount').innerText = favorites.length;
+            updateFavUI();
+        }
+
+        function updateFavUI() {
+            const content = document.getElementById('favListContent');
+            if (favorites.length === 0) content.innerHTML = '<div style="text-align:center; color:#717a8a; padding:20px;">Nenhum favorito.</div>';
+            else content.innerHTML = favorites.map(item => `<div class="cart-item"><img src="${item.image}"><strong>${item.title}</strong></div>`).join('');
+        }
+
+        function openFavModal() {
+            document.getElementById('favModal').classList.add('active');
+            updateFavUI();
+        }
+
+        function closeFavModal() {
+            document.getElementById('favModal').classList.remove('active');
+        }
+
+        window.onload = () => {
+            updateCartUI();
+            document.getElementById('favCount').innerText = favorites.length;
+        };
+    </script>
+</body>
+
+</html>
