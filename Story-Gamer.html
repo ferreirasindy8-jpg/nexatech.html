@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story Games | Tokyo Ghoul Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+         :root {
+            --bg: #08090c;
+            --surface: #111319;
+            --surface2: #181b22;
+            --text: #f4f4f4;
+            --muted: #9da2ad;
+            --red: #b20d1b;
+            --red2: #e51b2b;
+            --gold: #d5a62a;
+            --line: rgba(255, 255, 255, .09);
+            --shadow: 0 20px 60px rgba(0, 0, 0, .45);
+        }
+        
+        * {
+            box-sizing: border-box;
+            scroll-behavior: smooth
+        }
+        
+        body {
+            margin: 0;
+            font-family: Inter, Arial, sans-serif;
+            color: var(--text);
+            min-height: 100vh;
+            background: linear-gradient(rgba(5, 6, 9, .83), rgba(5, 6, 9, .94)), url("https://s.animeanime.jp/imgs/p/64XVvff3mD9cFhi_PU1_DqGg_6ytrq_oqaqr/143498.jpg?zoom=spacing") center/cover fixed no-repeat;
+        }
+        
+        body.light {
+            --bg: #f1eee9;
+            --surface: #fff;
+            --surface2: #eeeae3;
+            --text: #171717;
+            --muted: #656565;
+            --line: rgba(0, 0, 0, .1);
+            background: linear-gradient(rgba(241, 238, 233, .91), rgba(241, 238, 233, .96)), url("https://s.animeanime.jp/imgs/p/64XVvff3mD9cFhi_PU1_DqGg_6ytrq_oqaqr/143498.jpg?zoom=spacing") center/cover fixed no-repeat;
+        }
+        
+        button,
+        input {
+            font: inherit
+        }
+        
+        button {
+            cursor: pointer
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit
+        }
+        
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(7, 8, 11, .84);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--line);
+        }
+        
+        .light header {
+            background: rgba(255, 255, 255, .84)
+        }
+        
+        .navbar {
+            max-width: 1200px;
+            min-height: 72px;
+            padding: 0 20px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        
+        .logo {
+            font-family: "Playfair Display", serif;
+            font-size: 25px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+        
+        .logo span {
+            color: var(--red2)
+        }
+        
+        nav {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+        }
+        
+        nav button {
+            color: var(--muted);
+            background: transparent;
+            border: 0;
+            padding: 10px 12px;
+            border-radius: 10px;
+            transition: .2s;
+        }
+        
+        nav button:hover,
+        nav button.active {
+            color: var(--text);
+            background: var(--surface2);
+        }
+        
+        .nav-actions {
+            display: flex;
+            gap: 8px
+        }
+        
+        .icon-btn {
+            width: 42px;
+            height: 42px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: var(--surface);
+            color: var(--text);
+            position: relative;
+        }
+        
+        .badge {
+            position: absolute;
+            right: -5px;
+            top: -5px;
+            width: 19px;
+            height: 19px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: var(--red2);
+            color: white;
+            font-size: 10px;
+            font-weight: 800;
+        }
+        
+        main {
+            width: min(1200px, 100%);
+            margin: auto;
+            padding: 34px 20px 70px;
+        }
+        
+        .page {
+            display: none;
+            animation: pageIn .42s ease both;
+        }
+        
+        .page.active {
+            display: block
+        }
+        
+        @keyframes pageIn {
+            from {
+                opacity: 0;
+                transform: translateY(22px) scale(.99)
+            }
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+        
+        .hero {
+            min-height: 480px;
+            padding: 58px;
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(90deg, rgba(0, 0, 0, .92), rgba(0, 0, 0, .52), rgba(0, 0, 0, .18)), radial-gradient(circle at 80% 45%, rgba(178, 13, 27, .35), transparent 28%), url("https://s.animeanime.jp/imgs/p/64XVvff3mD9cFhi_PU1_DqGg_6ytrq_oqaqr/143498.jpg?zoom=spacing") center/cover;
+            box-shadow: var(--shadow);
+        }
+        
+        .hero:before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 50%, rgba(178, 13, 27, .16));
+            pointer-events: none;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 650px
+        }
+        
+        .eyebrow {
+            color: #f02a39;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+        
+        h1,
+        h2 {
+            font-family: "Playfair Display", serif
+        }
+        
+        h1 {
+            font-size: clamp(42px, 6vw, 72px);
+            line-height: .98;
+            margin: 14px 0;
+        }
+        
+        .hero p {
+            color: #dedede;
+            line-height: 1.7;
+            font-size: 17px;
+        }
+        
+        .cta {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 25px
+        }
+        
+        .btn {
+            border: 0;
+            border-radius: 12px;
+            padding: 13px 18px;
+            font-weight: 800;
+            transition: .2s;
+        }
+        
+        .btn.primary {
+            background: var(--red);
+            color: #fff
+        }
+        
+        .btn.primary:hover {
+            background: var(--red2);
+            transform: translateY(-2px)
+        }
+        
+        .btn.secondary {
+            background: rgba(255, 255, 255, .09);
+            border: 1px solid rgba(255, 255, 255, .15);
+            color: #fff;
+        }
+        
+        .btn.secondary:hover {
+            background: rgba(255, 255, 255, .16)
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 18px;
+        }
+        
+        .feature {
+            padding: 19px;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: rgba(17, 19, 25, .9);
+        }
+        
+        .feature i {
+            color: #e51b2b;
+            font-size: 20px
+        }
+        
+        .feature strong {
+            display: block;
+            margin: 8px 0 3px
+        }
+        
+        .feature span {
+            color: var(--muted);
+            font-size: 13px
+        }
+        
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 20px;
+            margin: 42px 0 18px;
+        }
+        
+        .section-head h2 {
+            font-size: 31px;
+            margin: 0
+        }
+        
+        .section-head p {
+            margin: 6px 0 0;
+            color: var(--muted)
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+        
+        .card {
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: linear-gradient(145deg, var(--surface), var(--surface2));
+            box-shadow: 0 12px 35px rgba(0, 0, 0, .2);
+            transition: .25s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(229, 27, 43, .45);
+        }
+        
+        .cover {
+            height: 190px;
+            display: grid;
+            place-items: center;
+            font-size: 52px;
+            background: radial-gradient(circle at 25% 25%, rgba(229, 27, 43, .5), transparent 30%), linear-gradient(135deg, #261015, #111319);
+        }
+        
+        .card-body {
+            padding: 18px
+        }
+        
+        .tag {
+            color: #e51b2b;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 800;
+        }
+        
+        .card h3 {
+            margin: 7px 0
+        }
+        
+        .card p {
+            min-height: 45px;
+            color: var(--muted);
+            line-height: 1.55;
+            font-size: 13px;
+        }
+        
+        .card-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        
+        .price {
+            font-size: 19px;
+            font-weight: 800
+        }
+        
+        .small-btn {
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 9px 12px;
+            background: transparent;
+            color: var(--text);
+            font-weight: 700;
+        }
+        
+        .small-btn:hover {
+            background: var(--red);
+            border-color: var(--red);
+            color: white;
+        }
+        
+        .panel {
+            background: rgba(17, 19, 25, .94);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 18px;
+        }
+        
+        .light .panel,
+        .light .feature {
+            background: rgba(255, 255, 255, .92)
+        }
+        
+        .searchbar {
+            display: flex;
+            gap: 9px;
+            padding: 7px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            border-radius: 14px;
+        }
+        
+        .searchbar input {
+            flex: 1;
+            border: 0;
+            outline: 0;
+            padding: 11px;
+            color: var(--text);
+            background: transparent;
+        }
+        
+        .searchbar button {
+            border: 0;
+            border-radius: 10px;
+            background: var(--red);
+            color: #fff;
+            padding: 0 17px;
+        }
+        
+        .chat-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 16px;
+        }
+        
+        .rooms {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .room {
+            width: 100%;
+            border: 1px solid var(--line);
+            background: var(--surface2);
+            color: var(--text);
+            text-align: left;
+            padding: 14px;
+            border-radius: 12px;
+        }
+        
+        .room.active {
+            border-color: var(--red);
+            background: rgba(178, 13, 27, .16)
+        }
+        
+        .room small {
+            display: block;
+            color: var(--muted);
+            margin-top: 4px
+        }
+        
+        .chat-box {
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 15px;
+        }
+        
+        .chat-title h3 {
+            margin: 0
+        }
+        
+        .online {
+            color: #65d879;
+            font-size: 12px
+        }
+        
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 18px 4px;
+            max-height: 380px;
+        }
+        
+        .message {
+            max-width: 78%;
+            margin: 9px 0;
+            padding: 11px 13px;
+            border-radius: 13px;
+            background: var(--surface2);
+        }
+        
+        .message.me {
+            margin-left: auto;
+            background: rgba(178, 13, 27, .24);
+        }
+        
+        .message .name {
+            font-size: 11px;
+            color: #ef4653;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        
+        .message p {
+            margin: 0;
+            line-height: 1.5
+        }
+        
+        .bot {
+            border-left: 3px solid var(--gold);
+            background: rgba(213, 166, 42, .08);
+        }
+        
+        .chat-form {
+            display: flex;
+            gap: 8px;
+            border-top: 1px solid var(--line);
+            padding-top: 15px;
+        }
+        
+        .chat-form input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            outline: 0;
+            color: var(--text);
+            background: var(--surface2);
+        }
+        
+        .safety {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 10px;
+        }
+        
+        .tg-feature {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 24px;
+            padding: 0;
+            overflow: hidden;
+        }
+        
+        .tg-image {
+            min-height: 330px
+        }
+        
+        .tg-image img {
+            width: 100%;
+            height: 100%;
+            min-height: 330px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .tg-copy {
+            padding: 35px 30px 35px 5px;
+            align-self: center;
+        }
+        
+        .tg-copy h3 {
+            font-family: "Playfair Display", serif;
+            font-size: 34px;
+            margin: 10px 0;
+        }
+        
+        .tg-copy p {
+            color: var(--muted);
+            line-height: 1.7
+        }
+        
+        .tg-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-top: 18px;
+        }
+        
+        .tg-card {
+            overflow: hidden;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+        }
+        
+        .tg-card img {
+            width: 100%;
+            height: 260px;
+            display: block;
+            object-fit: cover;
+        }
+        
+        .tg-card div {
+            padding: 20px
+        }
+        
+        .tg-card h3 {
+            margin: 7px 0
+        }
+        
+        .tg-card p {
+            color: var(--muted);
+            line-height: 1.6;
+            font-size: 13px
+        }
+        
+        .cart-drawer {
+            position: fixed;
+            z-index: 200;
+            top: 0;
+            right: -430px;
+            width: min(410px, 92vw);
+            height: 100%;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            background: var(--surface);
+            border-left: 1px solid var(--line);
+            box-shadow: var(--shadow);
+            transition: .3s;
+        }
+        
+        .cart-drawer.open {
+            right: 0
+        }
+        
+        .cart-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .cart-items {
+            flex: 1;
+            overflow: auto
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--line);
+        }
+        
+        .cart-item small {
+            color: var(--muted)
+        }
+        
+        .total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: 800;
+            margin: 15px 0;
+        }
+        
+        .form {
+            max-width: 550px;
+            display: grid;
+            gap: 12px;
+        }
+        
+        .form input {
+            padding: 13px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--surface2);
+            color: var(--text);
+        }
+        
+        .toast {
+            position: fixed;
+            z-index: 500;
+            left: 50%;
+            bottom: 25px;
+            transform: translate(-50%, 20px);
+            opacity: 0;
+            pointer-events: none;
+            padding: 12px 18px;
+            background: #17181d;
+            color: #fff;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            transition: .25s;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translate(-50%, 0)
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 13px;
+        }
+        
+        .mobile-menu {
+            display: none
+        }
+        
+        @media(max-width:850px) {
+            .tg-feature {
+                grid-template-columns: 1fr
+            }
+            .tg-copy {
+                padding: 25px
+            }
+            .tg-grid {
+                grid-template-columns: 1fr
+            }
+            nav {
+                display: none;
+                position: absolute;
+                left: 10px;
+                right: 10px;
+                top: 68px;
+                padding: 8px;
+                flex-direction: column;
+                background: var(--surface);
+                border: 1px solid var(--line);
+                border-radius: 14px;
+            }
+            nav.mobile-open {
+                display: flex
+            }
+            .mobile-menu {
+                display: block
+            }
+            .navbar {
+                justify-content: space-between
+            }
+            .games-grid {
+                grid-template-columns: 1fr 1fr
+            }
+            .chat-layout {
+                grid-template-columns: 1fr
+            }
+            .rooms {
+                display: grid;
+                grid-template-columns: 1fr 1fr
+            }
+        }
+        
+        @media(max-width:560px) {
+            main {
+                padding: 20px 14px 50px
+            }
+            .games-grid {
+                grid-template-columns: 1fr
+            }
+            .features {
+                grid-template-columns: 1fr
+            }
+            .hero {
+                min-height: 430px;
+                padding: 30px 23px;
+                border-radius: 20px
+            }
+            .section-head {
+                display: block
+            }
+            .searchbar {
+                margin-top: 15px
+            }
+            .rooms {
+                grid-template-columns: 1fr
+            }
+        }
+        /* NPCs integrados ao Bate-papo */
+        
+        .npc-room {
+            border-color: rgba(213, 166, 42, .22);
+        }
+        
+        .npc-room.active {
+            border-color: var(--gold);
+            background: rgba(213, 166, 42, .10);
+        }
+        
+        .npc-list {
+            display: none;
+            margin-top: 12px;
+            gap: 8px;
+        }
+        
+        .npc-list.open {
+            display: grid;
+        }
+        
+        .npc-card {
+            width: 100%;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            color: var(--text);
+            text-align: left;
+            padding: 10px 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: .2s;
+        }
+        
+        .npc-card:hover,
+        .npc-card.active {
+            border-color: var(--red2);
+            background: rgba(178, 13, 27, .14);
+            transform: translateX(2px);
+        }
+        
+        .npc-avatar {
+            width: 38px;
+            height: 38px;
+            flex: 0 0 38px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #2a1015, #111319);
+            border: 1px solid rgba(229, 27, 43, .35);
+            font-size: 17px;
+        }
+        
+        .npc-card strong {
+            display: block;
+            font-size: 13px;
+        }
+        
+        .npc-card small {
+            color: var(--muted);
+            display: block;
+            margin-top: 2px;
+        }
+        
+        .npc-status {
+            color: #65d879;
+            font-size: 11px;
+            margin-left: auto;
+            white-space: nowrap;
+        }
+        
+        .typing {
+            opacity: .72;
+            font-style: italic;
+        }
+        
+        @media(max-width:560px) {
+            .npc-list.open {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="navbar">
+            <a href="#" class="logo" onclick="showPage('home')">Story <span>Games</span></a>
+
+            <button class="icon-btn mobile-menu" onclick="toggleMobile()" aria-label="Abrir menu">
+    <i class="fa-solid fa-bars"></i>
+    </button>
+
+            <nav id="nav">
+                <button class="active" data-page="home" onclick="showPage('home')">Início</button>
+                <button data-page="search" onclick="showPage('search')">Pesquisar</button>
+                <button data-page="purchase" onclick="showPage('purchase')">Comprar</button>
+                <button data-page="chat" onclick="showPage('chat')">Bate-papo</button>
+                <button data-page="tokyo-ghoul" onclick="showPage('tokyo-ghoul')">Tokyo Ghoul</button>
+                <button data-page="settings" onclick="showPage('settings')">Configurações</button>
+            </nav>
+
+            <div class="nav-actions">
+                <button class="icon-btn" onclick="toggleTheme()" aria-label="Mudar tema">
+        <i class="fa-solid fa-moon"></i>
+    </button>
+                <button class="icon-btn" onclick="toggleCart()" aria-label="Carrinho">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span class="badge" id="cart-count">0</span>
+    </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <section id="home" class="page active">
+            <div class="hero">
+                <div class="hero-content">
+                    <div class="eyebrow">Story Games • Tokyo Ghoul Edition</div>
+                    <h1>Entre na história. Faça sua escolha.</h1>
+                    <p>
+                        Descubra jogos narrativos, converse com a comunidade e encontre aventuras que vão ficar na sua memória.
+                    </p>
+                    <div class="cta">
+                        <button class="btn primary" onclick="showPage('purchase')">
+        Explorar jogos <i class="fa-solid fa-arrow-right"></i>
+        </button>
+                        <button class="btn secondary" onclick="showPage('chat')">
+        <i class="fa-solid fa-comments"></i> Entrar no bate-papo
+        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features">
+                <div class="feature">
+                    <i class="fa-solid fa-comments"></i>
+                    <strong>Salas de bate-papo</strong>
+                    <span>Converse em salas públicas com a comunidade.</span>
+                </div>
+                <div class="feature">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <strong>Moderação automática</strong>
+                    <span>Um robô filtra palavrões e mensagens inadequadas.</span>
+                </div>
+                <div class="feature">
+                    <i class="fa-solid fa-masks-theater"></i>
+                    <strong>Clima Tokyo Ghoul</strong>
+                    <span>Visual escuro com vermelho inspirado no universo do anime.</span>
+                </div>
+            </div>
+
+            <div class="section-head">
+                <div>
+                    <h2>Jogos em destaque</h2>
+                    <p>Escolha uma nova história para começar.</p>
+                </div>
+            </div>
+
+            <div class="games-grid" id="featured"></div>
+        </section>
+
+        <section id="search" class="page">
+            <div class="section-head">
+                <div>
+                    <h2>Pesquisar jogos</h2>
+                    <p>Procure por nome, gênero ou descrição.</p>
+                </div>
+            </div>
+
+            <div class="searchbar">
+                <input id="search-input" type="search" placeholder="Ex.: mistério, fantasia..." onkeydown="if(event.key==='Enter')searchGame()">
+                <button onclick="searchGame()">
+        <i class="fa-solid fa-magnifying-glass"></i> Pesquisar
+    </button>
+            </div>
+
+            <div class="games-grid" id="search-results" style="margin-top:20px"></div>
+        </section>
+
+
+        <section id="tokyo-ghoul" class="page">
+            <div class="section-head">
+                <div>
+                    <h2>Universo Tokyo Ghoul</h2>
+                    <p>Uma área especial para os fãs do anime.</p>
+                </div>
+            </div>
+
+            <div class="panel tg-feature">
+                <div class="tg-image">
+                    <img src="https://s.animeanime.jp/imgs/p/64XVvff3mD9cFhi_PU1_DqGg_6ytrq_oqaqr/143498.jpg?zoom=spacing" alt="Visual promocional de Tokyo Ghoul">
+                </div>
+                <div class="tg-copy">
+                    <span class="tag">TOKYO GHOUL</span>
+                    <h3>Kaneki, Touka e o mundo dos ghouls</h3>
+                    <p>
+                        O site agora tem uma área temática de Tokyo Ghoul, com imagens, atmosfera sombria em vermelho e preto e salas para a comunidade.
+                    </p>
+                    <button class="btn primary" onclick="showPage('chat')">
+        Entrar nas salas <i class="fa-solid fa-comments"></i>
+</button>
+                </div>
+            </div>
+
+            <div class="tg-grid">
+                <article class="tg-card">
+                    <img src="https://s.animeanime.jp/imgs/p/64XVvff3mD9cFhi_PU1_DqGg_6ytrq_oqaqr/143498.jpg?zoom=spacing" alt="Visual de Tokyo Ghoul com personagens">
+                    <div>
+                        <span class="tag">PERSONAGENS</span>
+                        <h3>Kaneki & Touka</h3>
+                        <p>Converse com outros fãs sobre seus personagens favoritos.</p>
+                    </div>
+                </article>
+
+                <article class="tg-card">
+                    <img src="https://animeanime.jp/imgs/p/JsfylNXtaHqOdo8c8P_mHjahJ65Jrq_oqaqr/359950.jpg" alt="Cena de Tokyo Ghoul no café Anteiku">
+                    <div>
+                        <span class="tag">ANTEIKU</span>
+                        <h3>Café Anteiku</h3>
+                        <p>Uma sala temática para conversar sobre o anime e suas histórias.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="purchase" class="page">
+            <div class="section-head">
+                <div>
+                    <h2>Comprar jogos</h2>
+                    <p>Adicione seus favoritos ao carrinho.</p>
+                </div>
+            </div>
+
+            <div class="games-grid" id="shop"></div>
+        </section>
+
+        <section id="chat" class="page">
+            <div class="section-head">
+                <div>
+                    <h2>Bate-papo</h2>
+                    <p>Converse em salas públicas com amigos ou outros jogadores.</p>
+                </div>
+            </div>
+
+            <div class="chat-layout">
+
+                <div class="panel">
+                    <h3>Salas</h3>
+                    <div class="rooms">
+                        <button class="room active" onclick="changeRoom('Amigos',this)">
+        <i class="fa-solid fa-user-group"></i> Amigos
+        <small>Converse com seus amigos</small>
+        </button>
+
+                        <button class="room" onclick="changeRoom('Sala Pública',this)">
+        <i class="fa-solid fa-earth-americas"></i> Sala Pública
+        <small>Conheça outros jogadores</small>
+        </button>
+
+                        <button class="room" onclick="changeRoom('Jogos',this)">
+        <i class="fa-solid fa-gamepad"></i> Jogos
+        <small>Fale sobre seus jogos favoritos</small>
+        </button>
+
+                        <button class="room" onclick="changeRoom('Animes',this)">
+        <i class="fa-solid fa-mask"></i> Animes
+        <small>Converse sobre anime e mangá</small>
+        </button>
+
+                        <button class="room npc-room" onclick="toggleNpcRoom(this)">
+        <i class="fa-solid fa-robot"></i> NPCs
+        <small>Converse com personagens</small>
+                        </button>
+
+                        <div class="npc-list" id="npc-list">
+                            <button class="npc-card" onclick="selectNpc('Kaneki', this)">
+                                <span class="npc-avatar">🩸</span>
+                                <span>
+                                    <strong>Kaneki</strong>
+                                    <small>Conversando sobre histórias e Tokyo Ghoul</small>
+                                </span>
+                                <span class="npc-status">● online</span>
+                            </button>
+
+                            <button class="npc-card" onclick="selectNpc('Touka', this)">
+                                <span class="npc-avatar">🪽</span>
+                                <span>
+                                    <strong>Touka</strong>
+                                    <small>Direta, inteligente e protetora</small>
+                                </span>
+                                <span class="npc-status">● online</span>
+                            </button>
+
+                            <button class="npc-card" onclick="selectNpc('Hide', this)">
+                                <span class="npc-avatar">☀️</span>
+                                <span>
+                                    <strong>Hide</strong>
+                                    <small>Amigável e cheio de energia</small>
+                                </span>
+                                <span class="npc-status">● online</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="safety">
+                        <i class="fa-solid fa-circle-info"></i> Não compartilhe senha, endereço ou outros dados pessoais no chat.
+                    </div>
+                </div>
+
+                <div class="panel chat-box">
+                    <div class="chat-title">
+                        <div>
+                            <h3 id="room-name">Amigos</h3>
+                            <span class="online" id="chat-status">● sala ativa</span>
+                        </div>
+                        <span title="Moderação automática"><i class="fa-solid fa-robot"></i> ModBot</span>
+                    </div>
+
+                    <div class="messages" id="messages">
+                        <div class="message bot">
+                            <div class="name"><i class="fa-solid fa-robot"></i> ModBot</div>
+                            <p>Olá! Eu sou o moderador automático. Mensagens com xingamentos ou conteúdo inadequado serão bloqueadas.</p>
+                        </div>
+
+                        <div class="message">
+                            <div class="name">Yuki</div>
+                            <p>Alguém já jogou um jogo de história muito bom ultimamente?</p>
+                        </div>
+
+                        <div class="message">
+                            <div class="name">Ken</div>
+                            <p>Eu gosto bastante de jogos com escolhas diferentes.</p>
+                        </div>
+                    </div>
+
+                    <div class="chat-form">
+                        <input id="chat-input" placeholder="Digite uma mensagem..." maxlength="300" onkeydown="if(event.key==='Enter')sendMessage()">
+                        <button class="btn primary" onclick="sendMessage()">
+        <i class="fa-solid fa-paper-plane"></i>
+        </button>
+                    </div>
+
+                    <div class="safety">
+                        <i class="fa-solid fa-shield-halved"></i> O ModBot bloqueia termos inadequados antes da mensagem aparecer.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="settings" class="page">
+            <div class="section-head">
+                <div>
+                    <h2>Configurações</h2>
+                    <p>Personalize sua experiência.</p>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3>Preferências</h3>
+
+                <label>
+    <input type="checkbox" id="promo" checked>
+    Receber novidades e promoções
+    </label>
+
+                <br><br>
+
+                <label>
+    <input type="checkbox" id="newgames">
+    Avisar quando novos jogos chegarem
+    </label>
+
+                <br><br>
+
+                <button class="btn primary" onclick="saveSettings()">
+    Salvar configurações
+    </button>
+            </div>
+
+            <div class="panel">
+                <h3>Conta</h3>
+
+                <div class="form">
+                    <input type="email" id="login-email" placeholder="Seu email">
+                    <input type="password" id="login-password" placeholder="Sua senha">
+
+                    <button class="btn primary" onclick="login()">Entrar</button>
+                    <button class="small-btn" onclick="logout()">Sair da conta</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <aside id="cart" class="cart-drawer">
+        <div class="cart-top">
+            <h2>Seu carrinho</h2>
+            <button class="icon-btn" onclick="toggleCart()">
+    <i class="fa-solid fa-xmark"></i>
+    </button>
+        </div>
+
+        <div class="cart-items" id="cart-items"></div>
+
+        <div class="total">
+            <span>Total</span>
+            <span id="cart-total">R$ 0,00</span>
+        </div>
+
+        <button class="btn primary" onclick="checkout()">
+    Finalizar compra
+</button>
+    </aside>
+
+    <div id="toast" class="toast"></div>
+
+    <footer>
+        © 2026 Story Games • Comunidade de jogos e histórias.
+    </footer>
+
+    <script>
+        const games = [{
+            id: 1,
+            name: "A Última Escolha",
+            genre: "Narrativa",
+            price: 39.90,
+            icon: "fa-mask",
+            desc: "Uma aventura de mistério onde cada decisão muda o caminho da história."
+        }, {
+            id: 2,
+            name: "Além do Horizonte",
+            genre: "Aventura",
+            price: 59.90,
+            icon: "fa-compass",
+            desc: "Explore um mundo desconhecido e descubra os segredos de uma antiga jornada."
+        }, {
+            id: 3,
+            name: "Noite de Mistérios",
+            genre: "Mistério",
+            price: 29.90,
+            icon: "fa-moon",
+            desc: "Investigue pistas, faça escolhas e descubra o que aconteceu naquela noite."
+        }, {
+            id: 4,
+            name: "Memórias Perdidas",
+            genre: "Drama",
+            price: 44.90,
+            icon: "fa-book-open",
+            desc: "Uma narrativa sobre memórias, amizades e novas descobertas."
+        }, {
+            id: 5,
+            name: "Reino Esquecido",
+            genre: "Fantasia",
+            price: 69.90,
+            icon: "fa-crown",
+            desc: "Entre em um reino mágico e escolha o destino de seus personagens."
+        }, {
+            id: 6,
+            name: "Código Sombrio",
+            genre: "Suspense",
+            price: 49.90,
+            icon: "fa-terminal",
+            desc: "Resolva enigmas e desvende uma conspiração escondida nas sombras."
+        }];
+
+        let cart = JSON.parse(localStorage.getItem("storyCart") || "[]");
+
+        function money(v) {
+            return v.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL"
+            });
+        }
+
+        function card(g) {
+            return `
+<article class="card">
+    <div class="cover">
+    <i class="fa-solid ${g.icon}"></i>
+    </div>
+
+    <div class="card-body">
+    <span class="tag">${g.genre}</span>
+    <h3>${g.name}</h3>
+    <p>${g.desc}</p>
+
+    <div class="card-bottom">
+        <span class="price">${money(g.price)}</span>
+
+        <button class="small-btn" onclick="addToCart(${g.id})">
+        <i class="fa-solid fa-plus"></i> Carrinho
+        </button>
+    </div>
+    </div>
+</article>`;
+        }
+
+        function render() {
+            document.getElementById("featured").innerHTML =
+                games.slice(0, 3).map(card).join("");
+
+            document.getElementById("shop").innerHTML =
+                games.map(card).join("");
+
+            updateCart();
+        }
+
+        function showPage(page) {
+            document.querySelectorAll(".page")
+                .forEach(p => p.classList.remove("active"));
+
+            document.getElementById(page).classList.add("active");
+
+            document.querySelectorAll("nav button")
+                .forEach(btn => {
+                    btn.classList.toggle("active", btn.dataset.page === page);
+                });
+
+            document.getElementById("nav").classList.remove("mobile-open");
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+        function toggleMobile() {
+            document.getElementById("nav").classList.toggle("mobile-open");
+        }
+
+        function addToCart(id) {
+            const game = games.find(g => g.id === id);
+
+            cart.push(game);
+
+            saveCart();
+            updateCart();
+
+            toast(game.name + " foi adicionado ao carrinho!");
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveCart();
+            updateCart();
+        }
+
+        function saveCart() {
+            localStorage.setItem("storyCart", JSON.stringify(cart));
+        }
+
+        function updateCart() {
+            document.getElementById("cart-count").textContent = cart.length;
+
+            const box = document.getElementById("cart-items");
+
+            if (!cart.length) {
+                box.innerHTML = "<p style='color:var(--muted)'>Seu carrinho está vazio.</p>";
+            } else {
+                box.innerHTML = cart.map((g, i) => `
+    <div class="cart-item">
+        <div>
+        <strong>${g.name}</strong>
+        <br>
+        <small>${money(g.price)}</small>
+        </div>
+
+        <button class="small-btn" onclick="removeFromCart(${i})">
+        <i class="fa-solid fa-trash"></i>
+        </button>
+    </div>
+    `).join("");
+            }
+
+            document.getElementById("cart-total").textContent =
+                money(cart.reduce((total, g) => total + g.price, 0));
+        }
+
+        function toggleCart() {
+            document.getElementById("cart").classList.toggle("open");
+        }
+
+        function checkout() {
+            if (!cart.length) {
+                toast("Seu carrinho está vazio.");
+                return;
+            }
+
+            cart = [];
+            saveCart();
+            updateCart();
+
+            toast("Compra demonstrativa finalizada!");
+        }
+
+        function searchGame() {
+            const q = document.getElementById("search-input").value
+                .trim()
+                .toLowerCase();
+
+            const result = games.filter(g =>
+                `${g.name} ${g.genre} ${g.desc}`
+                .toLowerCase()
+                .includes(q)
+            );
+
+            document.getElementById("search-results").innerHTML =
+                result.length ?
+                result.map(card).join("") :
+                `
+        <div class="panel">
+        <strong>Nenhum jogo encontrado.</strong>
+        <p style="color:var(--muted)">
+            Tente procurar por outro nome ou gênero.
+        </p>
+        </div>`;
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle("light");
+
+            localStorage.setItem(
+                "storyTheme",
+                document.body.classList.contains("light") ?
+                "light" :
+                "dark"
+            );
+        }
+
+        function saveSettings() {
+            localStorage.setItem(
+                "storyPrefs",
+                JSON.stringify({
+                    promo: document.getElementById("promo").checked,
+                    newgames: document.getElementById("newgames").checked
+                })
+            );
+
+            toast("Configurações salvas!");
+        }
+
+        function login() {
+            const email = document.getElementById("login-email").value.trim();
+
+            if (!email) {
+                toast("Digite seu email.");
+                return;
+            }
+
+            toast("Login demonstrativo realizado!");
+        }
+
+        function logout() {
+            document.getElementById("login-email").value = "";
+            document.getElementById("login-password").value = "";
+
+            toast("Você saiu da conta.");
+        }
+
+        let activeNpc = null;
+
+        const npcData = {
+            Kaneki: {
+                icon: "🩸",
+                intro: "Oi. Eu sou o Kaneki. Podemos conversar sobre histórias, escolhas, livros ou sobre o universo de Tokyo Ghoul.",
+                replies: [
+                    ["oi|olá|ola|eai|e aí|hey", "Oi! Que bom te ver por aqui. Sobre o que você quer conversar?"],
+                    ["tokyo ghoul|anime|manga|mangá", "Tokyo Ghoul tem uma atmosfera bem marcante. Gosto especialmente das histórias que exploram escolhas e identidade."],
+                    ["jogo|games|jogar", "Eu gosto de histórias em que nossas escolhas realmente mudam o caminho. Qual tipo de jogo você prefere?"],
+                    ["livro|ler|leitura", "Livros podem ser uma ótima forma de entrar em outras histórias. Você gosta mais de fantasia, mistério ou drama?"],
+                    ["escolha|decisão", "Às vezes uma pequena escolha muda tudo. É justamente isso que torna uma boa história interessante."],
+                    ["amigo|amizade", "Amizade pode ser uma das partes mais importantes de uma história. É bom ter alguém com quem contar."],
+                    ["ajuda|conselho", "Claro. Me conta o que você está pensando e eu tento ajudar."],
+                    ["obrigado|obrigada|valeu", "De nada! Foi bom conversar com você."]
+                ],
+                fallback: "Hmm... interessante. Pode me contar mais? Quero entender melhor o que você quis dizer."
+            },
+            Touka: {
+                icon: "🪽",
+                intro: "Oi. Sou a Touka. Pode falar comigo. Só não espere que eu fique enrolando muito.",
+                replies: [
+                    ["oi|olá|ola|eai|e aí|hey", "Oi. Então, o que você veio fazer por aqui?"],
+                    ["tokyo ghoul|anime|manga|mangá", "Se você gosta de Tokyo Ghoul, escolha um assunto. Personagens, história ou mundo?"],
+                    ["jogo|games|jogar", "Jogos com boas histórias são interessantes. Principalmente quando as escolhas têm consequências."],
+                    ["cafe|café|anteiku", "Um bom café e uma conversa tranquila já melhoram bastante o dia."],
+                    ["amizade|amigo|amiga", "Valorizar quem está ao seu lado é importante. Pessoas confiáveis fazem diferença."],
+                    ["conselho|ajuda", "Fala. Vou tentar responder de forma direta."],
+                    ["legal|massa|incrivel|incrível", "É. Agora me conta por que você acha isso tão interessante."],
+                    ["obrigado|obrigada|valeu", "Tudo bem. Não precisa agradecer."]
+                ],
+                fallback: "Entendi. Explica um pouco melhor para eu conseguir responder."
+            },
+            Hide: {
+                icon: "☀️",
+                intro: "E aí! Eu sou o Hide! Bora conversar? Pode ser sobre jogos, anime, histórias ou qualquer assunto tranquilo.",
+                replies: [
+                    ["oi|olá|ola|eai|e aí|hey", "E aí! Tudo certo? O que você quer conversar hoje?"],
+                    ["tokyo ghoul|anime|manga|mangá", "Tokyo Ghoul rende assunto demais! Qual personagem você mais curte?"],
+                    ["jogo|games|jogar", "Eu topo falar de jogos! Você prefere aventura, mistério, RPG ou histórias com escolhas?"],
+                    ["amizade|amigo|amiga", "Amigos deixam qualquer aventura melhor. É muito mais divertido compartilhar uma história."],
+                    ["comida|comer", "Agora você me deixou com fome! 😄 Qual comida você mais gosta?"],
+                    ["escola|estudo", "Boa sorte nos estudos! Se estiver difícil, dá para organizar tudo por partes."],
+                    ["conselho|ajuda", "Claro! Manda a situação e vamos pensar juntos."],
+                    ["obrigado|obrigada|valeu", "Sempre! 😄"]
+                ],
+                fallback: "Hmmm... essa foi diferente! Me explica melhor, quero saber mais."
+            }
+        };
+
+        function toggleNpcRoom(button) {
+            document.querySelectorAll(".room").forEach(b => b.classList.remove("active"));
+            button.classList.add("active");
+
+            const list = document.getElementById("npc-list");
+            list.classList.toggle("open");
+
+            if (list.classList.contains("open") && !activeNpc) {
+                selectNpc("Kaneki", list.querySelector(".npc-card"));
+            } else if (!list.classList.contains("open")) {
+                activeNpc = null;
+                document.getElementById("room-name").textContent = "NPCs";
+                document.getElementById("chat-status").textContent = "● escolha um personagem";
+                resetNpcMessages();
+            }
+        }
+
+        function selectNpc(name, button) {
+            activeNpc = name;
+
+            document.querySelectorAll(".npc-card").forEach(b => b.classList.remove("active"));
+            if (button) button.classList.add("active");
+
+            document.querySelectorAll(".room").forEach(b => b.classList.remove("active"));
+            const npcRoom = document.querySelector(".npc-room");
+            if (npcRoom) npcRoom.classList.add("active");
+
+            document.getElementById("npc-list").classList.add("open");
+            document.getElementById("room-name").textContent = "💬 " + name;
+            document.getElementById("chat-status").textContent = "● NPC online";
+            resetNpcMessages();
+
+            const data = npcData[name];
+            addNpcMessage(data.intro);
+        }
+
+        function resetNpcMessages() {
+            const messages = document.getElementById("messages");
+            messages.innerHTML = `
+                <div class="message bot">
+                    <div class="name"><i class="fa-solid fa-robot"></i> ModBot</div>
+                    <p>Escolha um NPC na lista para começar uma conversa.</p>
+                </div>
+            `;
+        }
+
+        function changeRoom(room, button) {
+            activeNpc = null;
+
+            document.querySelectorAll(".room")
+                .forEach(b => b.classList.remove("active"));
+
+            button.classList.add("active");
+
+            document.getElementById("npc-list").classList.remove("open");
+            document.getElementById("room-name").textContent = room;
+            document.getElementById("chat-status").textContent = "● sala ativa";
+
+            document.getElementById("messages").innerHTML = `
+                <div class="message bot">
+                <div class="name">
+                    <i class="fa-solid fa-robot"></i> ModBot
+                </div>
+                <p>
+                    Você entrou na sala <strong>${escapeHtml(room)}</strong>.
+                    Lembre-se de respeitar os outros participantes.
+                </p>
+                </div>
+            `;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById("chat-input");
+            const text = input.value.trim();
+
+            if (!text) return;
+
+            if (containsBadWord(text)) {
+                input.value = "";
+
+                addBotMessage(
+                    "Sua mensagem foi bloqueada porque contém um termo inadequado. Tente escrever de outra forma."
+                );
+
+                toast("ModBot bloqueou a mensagem.");
+                return;
+            }
+
+            if (looksUnsafe(text)) {
+                input.value = "";
+
+                addBotMessage(
+                    "Por segurança, evite compartilhar informações pessoais no chat."
+                );
+
+                toast("ModBot protegeu sua mensagem.");
+                return;
+            }
+
+            const messages = document.getElementById("messages");
+
+            messages.insertAdjacentHTML(
+                "beforeend",
+                `
+                <div class="message me">
+                    <div class="name">Você</div>
+                    <p>${escapeHtml(text)}</p>
+                </div>
+                `
+            );
+
+            input.value = "";
+            messages.scrollTop = messages.scrollHeight;
+
+            if (activeNpc && npcData[activeNpc]) {
+                replyAsNpc(text);
+            }
+        }
+
+        function replyAsNpc(text) {
+            const npcName = activeNpc;
+            const data = npcData[npcName];
+            const normalized = normalizeText(text);
+
+            let reply = data.fallback;
+
+            for (const [keywords, response] of data.replies) {
+                const matched = keywords
+                    .split("|")
+                    .some(keyword => normalized.includes(normalizeText(keyword)));
+
+                if (matched) {
+                    reply = response;
+                    break;
+                }
+            }
+
+            const messages = document.getElementById("messages");
+            const typingId = "typing-" + Date.now();
+
+            messages.insertAdjacentHTML(
+                "beforeend",
+                `
+                <div class="message typing" id="${typingId}">
+                    <div class="name">${data.icon} ${escapeHtml(npcName)}</div>
+                    <p>digitando...</p>
+                </div>
+                `
+            );
+
+            messages.scrollTop = messages.scrollHeight;
+
+            setTimeout(() => {
+                const typing = document.getElementById(typingId);
+                if (typing) typing.remove();
+
+                if (activeNpc === npcName) {
+                    addNpcMessage(reply);
+                }
+            }, 700 + Math.min(text.length * 12, 900));
+        }
+
+        function addNpcMessage(text) {
+            const data = npcData[activeNpc];
+            if (!data) return;
+
+            const messages = document.getElementById("messages");
+
+            messages.insertAdjacentHTML(
+                "beforeend",
+                `
+                <div class="message">
+                    <div class="name">${data.icon} ${escapeHtml(activeNpc)}</div>
+                    <p>${escapeHtml(text)}</p>
+                </div>
+                `
+            );
+
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function addBotMessage(text) {
+            const messages = document.getElementById("messages");
+
+            messages.insertAdjacentHTML(
+                "beforeend",
+                `
+    <div class="message bot">
+    <div class="name">
+        <i class="fa-solid fa-robot"></i> ModBot
+    </div>
+    <p>${escapeHtml(text)}</p>
+    </div>
+    `
+            );
+
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        /*
+        FILTRO DO MODBOT
+        Adicione/remova palavras conforme a necessidade do seu projeto.
+        */
+        const badWords = [
+            "idiota",
+            "imbecil",
+            "burro",
+            "otario",
+            "otário",
+            "babaca",
+            "palhaco",
+            "palhaço",
+            "merda",
+            "porra",
+            "caralho",
+            "vai se",
+            "fdp",
+            "prr",
+            "foda-se",
+            "seu preto",
+            "seu macaco",
+            "sexo",
+            "pornografia",
+        ];
+
+        function normalizeText(text) {
+            return text
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-z0-9\s]/g, " ");
+        }
+
+        function containsBadWord(text) {
+            const normalized = normalizeText(text);
+
+            return badWords.some(word => {
+                const w = normalizeText(word);
+                return normalized.includes(w);
+            });
+        }
+
+        function looksUnsafe(text) {
+            const patterns = [
+                /\b\d{8,}\b/,
+                /\b(?:rua|avenida|av)\s+[a-z]/i,
+                /\b(?:senha|password)\b/i
+            ];
+
+            return patterns.some(pattern => pattern.test(text));
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement("div");
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        let toastTimer;
+
+        function toast(message) {
+            const t = document.getElementById("toast");
+
+            t.textContent = message;
+            t.classList.add("show");
+
+            clearTimeout(toastTimer);
+
+            toastTimer = setTimeout(() => {
+                t.classList.remove("show");
+            }, 2500);
+        }
+
+        if (localStorage.getItem("storyTheme") === "light") {
+            document.body.classList.add("light");
+        }
+
+        render();
+    </script>
+
+</body>
+
+</html>
